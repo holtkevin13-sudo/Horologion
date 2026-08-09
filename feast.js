@@ -210,7 +210,7 @@ var CAL = (function(){
   var engine = null, readyCbs = [], booted = false;
 
   /* Where the engine and its lectionary live, relative to index.html. */
-  var ENGINE_SRC = './js/calendar-engine-v2.js';
+  var ENGINE_SRC = './calendar-engine-v2.js';
   var DATA_BASE  = './';          // lectionary-full.json sits beside index.html
 
   /* The engine swallows a failed data fetch and installs an empty dataset,
