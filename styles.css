@@ -1,0 +1,269 @@
+:root{
+  --ground:#12100D; --ground-2:#1B1814; --raise:#221E19;
+  --ink:#E7DCC6; --ink-dim:#A99C84; --muted:#9A8E7B;
+  --gold:#C9A44C; --gold-dim:#8A7233; --rubric:#C24638;
+  --rule:#2E2922;
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --util:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --read:1.11rem;
+}
+html[data-theme="paper"]{
+  --ground:#E8E1D1; --ground-2:#F1ECE0; --raise:#FBF7EE;
+  --ink:#221D17; --ink-dim:#544C40; --muted:#7A7062;
+  --gold:#8A6A25; --gold-dim:#B79E63; --rubric:#9E2B20;
+  --rule:#D3C9B4;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:var(--display);
+  line-height:1.6;
+  padding-env:0;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:44rem;margin:0 auto;padding:0 1.25rem 4rem}
+.eyebrow{
+  font-family:var(--util); font-size:.66rem; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--rubric);
+}
+
+/* ---------- masthead ---------- */
+.mast{padding:1.75rem 0 .9rem;display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
+.mast h1{
+  font-size:.92rem;font-family:var(--util);font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0;
+}
+.mast h1 .cross{color:var(--rubric);margin-right:.5em;display:inline-block;vertical-align:-.18em}
+.mast h1 .cross svg{display:block;height:1.15rem;width:auto}
+.today{font-family:var(--util);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:.35rem 0 0}
+.themebtn{
+  background:none;border:1px solid var(--rule);color:var(--ink-dim);
+  font-family:var(--util);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.4rem .6rem;border-radius:2px;cursor:pointer;
+}
+.themebtn:hover{color:var(--gold);border-color:var(--gold-dim)}
+
+/* ---------- daily word ---------- */
+.word{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.6rem 0 1.4rem;margin-bottom:2rem}
+.word blockquote{margin:0;font-size:1.32rem;line-height:1.5;letter-spacing:.005em}
+.word .attr{margin-top:.7rem;font-family:var(--util);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.word .saying{margin-top:1.15rem;padding-top:1.1rem;border-top:1px dotted var(--rule);font-size:.98rem;color:var(--ink-dim);font-style:italic}
+.word .saying .attr{font-style:normal;margin-top:.5rem}
+
+/* ---------- the spine ---------- */
+.spinehead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.9rem}
+.recenter{
+  display:flex;align-items:center;gap:.9rem;width:100%;
+  background:var(--ground-2);border:1px solid var(--rule);border-left:2px solid var(--rubric);
+  border-radius:3px;padding:1rem .95rem;margin:0 0 2.4rem;
+  color:var(--ink);font-family:var(--display);text-align:left;cursor:pointer;
+}
+.recenter:active{background:var(--raise)}
+.recenter .rc-cross{color:var(--rubric);display:flex;align-items:center}
+.recenter .rc-cross svg{height:1.6rem;width:auto}
+.recenter .rc-txt{flex:1}
+.recenter .t{display:block;font-size:1.1rem;line-height:1.2}
+.recenter .d{display:block;font-family:var(--util);font-size:.68rem;color:var(--muted);margin-top:.3rem;line-height:1.5}
+.recenter .rc-go{color:var(--gold);font-family:var(--util);font-size:.95rem}
+.intro{
+  font-family:var(--util);font-size:.72rem;line-height:1.8;color:var(--muted);
+  margin:1.3rem 0 0;padding-bottom:.2rem;
+}
+.clock{font-family:var(--util);font-size:.68rem;letter-spacing:.12em;color:var(--muted);font-variant-numeric:tabular-nums}
+.spine{position:relative;margin:0 0 .6rem;padding-left:1.6rem}
+.grouplabel{
+  font-family:var(--display);font-size:1rem;color:var(--gold);
+  margin:1.7rem 0 .5rem;padding:0 0 .4rem 1.6rem;
+  border-bottom:1px solid var(--rule);
+}
+.groupnote{
+  font-family:var(--util);font-size:.68rem;line-height:1.7;color:var(--muted);
+  margin:.1rem 0 .2rem;padding-left:1.6rem;
+}
+.footlink{
+  background:none;border:0;padding:.5rem 0 0;color:var(--gold);cursor:pointer;
+  font-family:var(--util);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+}
+.spine::before{content:"";position:absolute;left:.31rem;top:.9rem;bottom:.9rem;width:1px;background:var(--rule)}
+.hour{
+  display:flex;align-items:baseline;gap:.75rem;width:100%;
+  background:none;border:0;border-radius:3px;
+  padding:.62rem .6rem .62rem .55rem;margin-left:-.55rem;
+  font-family:var(--display);color:var(--ink);text-align:left;cursor:pointer;
+  position:relative;
+}
+.hour::before{
+  content:"";position:absolute;left:-.93rem;top:1.28rem;
+  width:7px;height:7px;border-radius:50%;
+  border:1px solid var(--gold-dim);background:var(--ground);
+}
+.hour[data-now="1"]::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 18%,transparent)}
+.hour[data-now="1"]{background:var(--ground-2)}
+.hour:active{background:var(--raise)}
+.hour .nm{font-size:1.12rem;flex:1}
+.hour[data-now="1"] .nm{color:var(--gold)}
+.hour .tm{font-family:var(--util);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.hour .sub{display:block;font-family:var(--util);font-size:.68rem;letter-spacing:.02em;color:var(--muted);text-transform:none;margin-top:.15rem}
+.nowtag{font-family:var(--util);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rubric);margin-left:.5rem}
+
+/* ---------- intercessions ---------- */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:2.5rem}
+.tile{
+  background:var(--ground-2);border:1px solid var(--rule);border-radius:3px;
+  padding:.95rem .85rem;text-align:left;cursor:pointer;color:var(--ink);font-family:var(--display);
+}
+.tile:active{background:var(--raise)}
+.tile .t{font-size:1.02rem;display:block;line-height:1.25}
+.tile .d{font-family:var(--util);font-size:.66rem;color:var(--muted);display:block;margin-top:.35rem;letter-spacing:.02em}
+.tile.wide{grid-column:1 / -1}
+
+/* ---------- list view (a category's prayers) ---------- */
+.topbar{
+  position:sticky;top:0;z-index:20;background:var(--ground);
+  padding:.9rem 0 .7rem;border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:.8rem;
+}
+.back{
+  background:none;border:0;color:var(--gold);cursor:pointer;padding:.25rem .1rem;
+  font-family:var(--util);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+}
+.topbar .ttl{flex:1;font-size:1.02rem;line-height:1.2}
+.prog{position:absolute;left:0;right:0;bottom:-1px;height:1px;background:transparent}
+.prog i{display:block;height:1px;width:0;background:var(--gold);transition:width .1s linear}
+
+.idx{list-style:none;margin:1.2rem 0 0;padding:0}
+.idx li{border-bottom:1px solid var(--rule)}
+.idx button{
+  width:100%;background:none;border:0;color:var(--ink);font-family:var(--display);
+  text-align:left;padding:.95rem .2rem;cursor:pointer;display:flex;gap:.9rem;align-items:baseline;
+}
+.idx .n{font-family:var(--util);font-size:.62rem;color:var(--gold-dim);letter-spacing:.08em;min-width:1.4rem}
+.idx .l{flex:1;font-size:1.04rem;line-height:1.3}
+.idx .l small{display:block;font-family:var(--util);font-size:.66rem;color:var(--muted);margin-top:.2rem;letter-spacing:.02em}
+
+/* ---------- reader ---------- */
+.reader{padding-top:1.6rem;font-size:var(--read)}
+.reader .kicker{margin-bottom:.5rem}
+.reader h2{font-size:1.6rem;line-height:1.22;margin:0 0 .35rem;font-weight:400}
+.reader .by{font-family:var(--util);font-size:.7rem;letter-spacing:.08em;color:var(--muted);margin-bottom:1.8rem}
+.reader p{margin:0 0 1.15rem;line-height:1.78}
+.rubric{
+  font-family:var(--util);font-size:.66rem;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--rubric);margin:1.9rem 0 .8rem;line-height:1.6;
+}
+.rubric:first-child{margin-top:0}
+.verse{margin:0 0 1.15rem;padding-left:1rem;border-left:1px solid var(--gold-dim);color:var(--ink-dim);font-style:italic}
+.sub-h{font-size:1.12rem;margin:2rem 0 .8rem;color:var(--gold)}
+.times{font-family:var(--util);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rubric);vertical-align:.15em;margin-left:.45em;white-space:nowrap}
+.endmark{text-align:center;color:var(--gold-dim);margin:2.8rem 0 1rem}
+.endmark svg{height:2.1rem;width:auto;display:inline-block}
+.begin{font-family:var(--util);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.topbar .homecross{color:var(--rubric);display:flex;align-items:center}
+.topbar .homecross svg{height:1.05rem;width:auto}
+.pager{display:flex;gap:.7rem;margin:1rem 0 0}
+.pager button{
+  flex:1;background:var(--ground-2);border:1px solid var(--rule);color:var(--ink-dim);
+  font-family:var(--util);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.85rem .5rem;border-radius:3px;cursor:pointer;
+}
+.pager button:disabled{opacity:.32;cursor:default}
+.pager button:active:not(:disabled){color:var(--gold);border-color:var(--gold-dim)}
+
+/* ---------- rope ---------- */
+.rope{text-align:center;padding-top:2rem}
+.count{font-size:4.2rem;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums;margin:1.5rem 0 .3rem}
+.knot{font-family:var(--util);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tapzone{
+  display:block;width:100%;margin:2rem 0 1rem;padding:2.2rem 1rem;
+  background:var(--ground-2);border:1px solid var(--rule);border-radius:4px;
+  color:var(--ink);font-family:var(--display);font-size:1.06rem;line-height:1.7;cursor:pointer;
+}
+.tapzone:active{background:var(--raise);border-color:var(--gold-dim)}
+.reset{background:none;border:0;color:var(--muted);font-family:var(--util);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;padding:.6rem}
+
+.foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--rule);font-family:var(--util);font-size:.64rem;color:var(--muted);line-height:1.8}
+@media (prefers-reduced-motion:no-preference){
+  .fade{animation:f .28s ease-out}
+  @keyframes f{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ============================================================
+   Bottom tab bar
+   ============================================================ */
+body{padding-bottom:0}
+.wrap{padding-bottom:calc(5.6rem + env(safe-area-inset-bottom))}
+.tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:color-mix(in srgb,var(--ground) 92%,transparent);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-top:1px solid var(--rule);
+  padding:.45rem .3rem calc(.45rem + env(safe-area-inset-bottom));
+}
+.tabbar button{
+  background:none;border:0;cursor:pointer;padding:.4rem .2rem .3rem;
+  display:flex;flex-direction:column;align-items:center;gap:.28rem;
+  color:var(--muted);font-family:var(--util);
+  font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+}
+.tabbar button svg{height:1.15rem;width:auto;display:block}
+.tabbar button[aria-current="page"]{color:var(--gold)}
+.tabbar button[aria-current="page"] .tabmark{background:var(--gold)}
+.tabmark{display:block;width:14px;height:1px;background:transparent;margin-top:.1rem}
+
+/* ============================================================
+   Today: the commemoration card
+   ============================================================ */
+.feast{
+  border:1px solid var(--rule);border-radius:3px;background:var(--ground-2);
+  padding:1rem .95rem;margin:0 0 1.4rem;
+}
+.feast .fdate{
+  font-family:var(--util);font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+}
+.feast .ftitle{font-size:1.12rem;line-height:1.35;margin:.45rem 0 0}
+.feast[data-rank="great"] .ftitle,
+.feast[data-rank="pascha"] .ftitle{color:var(--gold)}
+.feast[data-rank="pascha"]{border-color:var(--gold-dim)}
+.feast .fmeta{
+  display:flex;flex-wrap:wrap;gap:.4rem .9rem;margin-top:.7rem;
+  padding-top:.65rem;border-top:1px dotted var(--rule);
+  font-family:var(--util);font-size:.63rem;letter-spacing:.06em;color:var(--muted);
+}
+.feast .fmeta b{font-weight:600;color:var(--ink-dim)}
+.fast-strict b{color:var(--rubric)}
+.fast-fast b{color:var(--rubric);opacity:.85}
+.fast-none b{color:var(--gold-dim)}
+
+.sectionhead{
+  font-family:var(--util);font-size:.66rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--rubric);
+  margin:2.4rem 0 .9rem;
+}
+.pagehead{padding:1.6rem 0 .3rem}
+.pagehead h2{font-size:1.5rem;margin:0 0 .3rem;font-weight:400;line-height:1.2}
+.pagehead p{font-family:var(--util);font-size:.7rem;line-height:1.75;color:var(--muted);margin:0}
+
+/* Saints listed under the commemoration */
+.feast .fsaints{
+  font-family:var(--util);font-size:.7rem;line-height:1.9;color:var(--ink-dim);
+  margin-top:.55rem;
+}
+/* Readings of the day */
+.readings{
+  display:flex;align-items:center;gap:.9rem;width:100%;
+  background:none;border:1px solid var(--rule);border-radius:3px;
+  padding:.85rem .95rem;margin:0 0 1.4rem;
+  color:var(--ink);font-family:var(--display);text-align:left;cursor:pointer;
+}
+.readings:active{background:var(--ground-2)}
+.readings .rd-txt{flex:1}
+.readings .t{display:block;font-size:1rem;line-height:1.25}
+.readings .d{
+  display:block;font-family:var(--util);font-size:.64rem;color:var(--muted);
+  margin-top:.3rem;line-height:1.5;
+}

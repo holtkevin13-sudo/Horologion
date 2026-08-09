@@ -1,0 +1,36 @@
+{
+  "name": "Horologion — Orthodox Daily Prayers",
+  "short_name": "Horologion",
+  "description": "A pocket book of hours: morning and evening prayers, the Hours, and prayers to the Theotokos, the guardian angel and St. Silouan.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#12100D",
+  "theme_color": "#12100D",
+  "categories": ["lifestyle", "books", "education"],
+  "icons": [
+    { "src": "./icons/favicon-96.png",          "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-120.png",            "sizes": "120x120", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-152.png",            "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-167.png",            "sizes": "167x167", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/apple-touch-icon.png",    "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-192.png",            "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-256.png",            "sizes": "256x256", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-384.png",            "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-512.png",            "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icons/icon-maskable-192.png",   "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "./icons/icon-maskable-512.png",   "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Morning Prayers", "short_name": "Morning", "url": "./?go=morning",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Evening Prayers", "short_name": "Evening", "url": "./?go=evening",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Recenter", "short_name": "Recenter", "url": "./?go=recenter",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
