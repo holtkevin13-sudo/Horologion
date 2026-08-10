@@ -1,4 +1,4 @@
-# Horologion
+# Prayer Book
 
 A pocket book of hours. Orthodox morning and evening prayers, the daily cycle,
 prayers to the Theotokos, the guardian angel and St. Silouan, and a Recenter
@@ -54,7 +54,7 @@ editor works. Keep the background `#12100D` and the cross `#C9A44C`.
 **After any change, bump the cache version in `sw.js`:**
 
 ```js
-const CACHE = 'horologion-v1';   // → 'horologion-v2'
+const CACHE = 'prayerbook cache';   // → 'horologion-v2'
 ```
 
 Skip this and phones will keep serving the old copy indefinitely. It is the
@@ -173,7 +173,7 @@ synaxarion. 02-29 is also absent, since the source year was not a leap year.
 
 ## On the texts
 
-Traditional English in the Slavic usage, in the received order. Where a prayer is
+Traditional English in the received order, as prayed across the Orthodox Church. Where a prayer is
 a supplication composed in the traditional manner rather than a received text,
 the page says so. These have not been proofread against a printed prayer book —
 worth checking a section against yours before relying on it daily.
