@@ -431,6 +431,23 @@ recenter: [
       R('The Fathers teach that God does not measure the length of a prayer, but the turning of the heart toward Him. A single word said in weakness is heard.')
     ] },
 
+  { id:'r-creed', title:'The Symbol of Faith', by:'The Creed of Nicaea and Constantinople',
+    body:[
+      R('When the ground gives way, say what the Church believes rather than what you can feel. The Creed is not a measure of how strongly you believe today; it is what is true whether or not you can feel it. Say it slowly, and let it hold you up.'),
+      P('I believe in one God, the Father Almighty, Maker of heaven and earth, and of all things visible and invisible.'),
+      P('And in one Lord Jesus Christ, the Son of God, the Only-begotten, begotten of the Father before all ages; Light of Light, true God of true God; begotten, not made; of one essence with the Father, by Whom all things were made;'),
+      P('Who for us men and for our salvation came down from the heavens, and was incarnate of the Holy Spirit and the Virgin Mary, and became man;'),
+      P('And was crucified for us under Pontius Pilate, and suffered, and was buried;'),
+      P('And arose again on the third day according to the Scriptures;'),
+      P('And ascended into the heavens, and sitteth at the right hand of the Father;'),
+      P('And shall come again with glory to judge the living and the dead, Whose kingdom shall have no end.'),
+      P('And in the Holy Spirit, the Lord, the Giver of life, Who proceedeth from the Father; Who with the Father and the Son together is worshipped and glorified; Who spake by the prophets.'),
+      P('In one Holy, Catholic and Apostolic Church.'),
+      P('I confess one baptism for the remission of sins.'),
+      P('I look for the resurrection of the dead, and the life of the age to come. Amen.'),
+      R('This is what the Church has confessed since the Councils, unchanged. When you say it you are not alone in saying it; you are saying what is being said, somewhere, at every hour.')
+    ] },
+
   { id:'r-arise', title:'Let God Arise', by:'Psalm 67 and the Prayer of the Precious Cross \u2014 against assault and temptation',
     body:[
       R('Make the sign of the Cross, and say:'),
