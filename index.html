@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Horologion</title>
-<meta name="description" content="A pocket book of hours: Orthodox morning and evening prayers, the Hours, and prayers to the Theotokos, the guardian angel and St. Silouan.">
+<title>Prayer Book</title>
+<meta name="description" content="An Orthodox prayer book: morning and evening prayers, the Hours, Communion, the commemoration, and prayers for hard days.">
 <meta name="color-scheme" content="dark light">
 
 <link rel="manifest" href="./manifest.json">
@@ -26,12 +26,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Horologion">
+<meta name="apple-mobile-web-app-title" content="Prayers">
 
 <!-- Social preview -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Horologion">
-<meta property="og:description" content="A pocket book of hours: Orthodox morning and evening prayers, the Hours, and prayers for hard days.">
+<meta property="og:title" content="Prayer Book">
+<meta property="og:description" content="An Orthodox prayer book for the day and for the hours.">
 <meta property="og:image" content="./og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -64,8 +64,22 @@
 <script src="./app.js"></script>
 <script>
 if('serviceWorker' in navigator){
+  /* Was a worker already in charge when this page loaded? If so, a change of
+     controller means a NEW build has activated and the page must reload to
+     run it. Without this, an updated app sits in the cache unused until the
+     browser happens to restart — which looks exactly like a failed upload. */
+  var hadController = !!navigator.serviceWorker.controller;
+  var reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    if(!hadController || reloading) return;
+    reloading = true;
+    location.reload();
+  });
   window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js').catch(function(){});
+    navigator.serviceWorker.register('./sw.js').then(function(reg){
+      reg.update();                                   // check on every launch
+      setInterval(function(){ reg.update(); }, 3600000);
+    }).catch(function(){});
   });
 }
 </script>
