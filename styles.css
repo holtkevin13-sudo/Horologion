@@ -428,3 +428,16 @@ div.notice{cursor:default}
   font-family:var(--util);font-size:.58rem;color:var(--gold-dim);
   vertical-align:.35em;margin-right:.5rem;
 }
+
+/* Kathisma listing */
+.psalm-body.kath{padding:.5rem .55rem .55rem}
+.kath-p{
+  display:flex;align-items:baseline;justify-content:space-between;width:100%;
+  background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:.7rem .35rem;color:var(--ink);font-family:var(--display);
+  font-size:1rem;text-align:left;cursor:pointer;
+}
+.kath-p:last-child{border-bottom:0}
+.kath-p:active{background:var(--raise)}
+.reader .pv{margin:0 0 .8rem;line-height:1.78;text-indent:-1.35rem;padding-left:1.35rem}
+.reader .pvn{font-family:var(--util);font-size:.58rem;color:var(--gold-dim);vertical-align:.35em;margin-right:.5rem}
