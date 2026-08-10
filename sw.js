@@ -1,24 +1,24 @@
 /* Horologion service worker.
    Bump CACHE whenever you change any file below, or phones will
    keep serving the old copy. That is the one maintenance chore. */
-const CACHE = 'horologion-v4';
+const CACHE = 'horologion-v5';
 
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
-  './prayers.js',
-  './feast.js',
-  './app.js',
-  './calendar-engine-v2.js',
+  './js/prayers.js',
+  './js/feast.js',
+  './js/app.js',
+  './js/calendar-engine-v2.js',
   './manifest.json',
-  './favicon.ico',
-  './favicon-32.png',
-  './apple-touch-icon.png',
-  './icon-192.png',
-  './icon-512.png',
-  './icon-maskable-192.png',
-  './icon-maskable-512.png'
+  './icons/favicon.ico',
+  './icons/favicon-32.png',
+  './icons/apple-touch-icon.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/icon-maskable-192.png',
+  './icons/icon-maskable-512.png'
 ];
 
 /* Optional. Cached if present; a 404 here must not break install. */
