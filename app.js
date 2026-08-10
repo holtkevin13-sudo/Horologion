@@ -77,7 +77,7 @@ function tabOf(v){
   return 'today';
 }
 
-var RULE_CATS = ['morning','evening','occasional'];
+var RULE_CATS = ['morning','evening','occasional','commem'];
 var HOUR_CATS = ['midnight','first','third','sixth','ninth','compline','vespers','matins','typika'];
 
 /* ---- the day ---- */
@@ -165,9 +165,8 @@ function renderToday(){
   h += '<div class="grid">'
      + tile('theotokos','To the Theotokos','Six prayers to the Mother of God')
      + tile('angel','To My Guardian Angel','Morning, evening, troparion')
-     + tile('silouan','To St. Silouan','Troparion, supplication, his own words')
      + tile('patron', patronLabel(), patronHint())
-     + '<button class="tile wide" onclick="go(\'rope\')"><span class="t">Prayer Rope</span><span class="d">Count the Jesus Prayer \u2014 33, 100, or 300 knots</span></button>'
+     + '<button class="tile" onclick="go(\'rope\')"><span class="t">Prayer Rope</span><span class="d">Count the Jesus Prayer</span></button>'
      + '</div>';
 
   h += '<div class="foot">Rubrics in red are instructions, not spoken.<br>'
@@ -185,9 +184,11 @@ function patronLabel(){
   return p ? 'To St. ' + p : 'To My Patron Saint';
 }
 function patronHint(){
-  return store.get('patron','').trim()
-    ? 'Your saint, and those you remember'
-    : 'Set your saint in Settings';
+  var n = patronName();
+  if(!n) return 'Set your saint in Settings';
+  return SAINT_LIB[n.toLowerCase().split(/\s+/)[0]]
+    ? 'Troparion and prayer'
+    : 'Prayer to the saint whose name you bear';
 }
 function tile(k, t, d){
   return '<button class="tile" onclick="go(\'' + k + '\')"><span class="t">' + t + '</span><span class="d">' + d + '</span></button>';
@@ -212,7 +213,10 @@ function renderRule(){
   h += '<ul class="idx">' + PRAYERS.occasional.map(function(p, i){
     return '<li><button onclick="open_(\'occasional\',' + i + ')"><span class="n">\u00b7</span>'
          + '<span class="l">' + esc(p.title) + '<small>' + esc(p.by) + '</small></span></button></li>';
-  }).join('') + '</ul>';
+  }).join('')
+  + '<li><button onclick="go(\'commem\')"><span class="n">\u00b7</span>'
+  + '<span class="l">Those I Remember<small>The living and the departed, by name</small></span></button></li>'
+  + '</ul>';
   paint(h);
 }
 
@@ -359,6 +363,7 @@ function renderSettings(){
   h += '<div class="sectionhead">About this book</div>';
   h += '<button class="setlink" onclick="go(\'about\')">The shape of the day<span class="rc-go">\u2192</span></button>';
   h += '<button class="setlink" onclick="go(\'patron\')">Prayers to your patron saint<span class="rc-go">\u2192</span></button>';
+  h += '<button class="setlink" onclick="go(\'commem\')">Those I remember<span class="rc-go">\u2192</span></button>';
 
   h += '<div class="foot">Traditional English in the received order. Rubrics in red are instructions, not spoken.<br>'
      + 'The calendar computes Pascha offline, so the app works with no connection.</div>';
@@ -466,7 +471,20 @@ window.addEventListener('popstate', function(e){
   render();
 });
 
+/* The patron slot is regenerated each render so a name typed in Settings
+   is reflected immediately, in the tile label and in the prayers alike. */
+function buildPatron(){
+  var n = patronName();
+  var key = n.toLowerCase().split(/\s+/)[0];
+  if(!n){ PRAYERS.patron = [PATRON_UNSET]; CATS.patron = 'My Patron Saint'; return; }
+  var list = (SAINT_LIB[key] || []).slice();
+  list.push(PATRON_PRAYER);
+  PRAYERS.patron = list;
+  CATS.patron = 'To St. ' + n;
+}
+
 function render(){
+  buildPatron();
   holdScreen(view.name === 'read' || view.name === 'rope');
   if(view.name === 'today') renderToday();
   else if(view.name === 'rule') renderRule();
