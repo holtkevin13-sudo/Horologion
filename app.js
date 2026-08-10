@@ -11,7 +11,7 @@ var store = {
   set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){ mem[k] = v; } }
 };
 
-var BUILD = 'v14';        // keep in step with CACHE in sw.js
+var BUILD = 'v15';        // keep in step with CACHE in sw.js
 
 var app = document.getElementById('app');
 var tabbar = document.getElementById('tabbar');
