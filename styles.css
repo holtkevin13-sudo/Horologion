@@ -22,7 +22,7 @@ body{
   padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:44rem;margin:0 auto;padding:0 1.25rem 4rem}
+.wrap{max-width:44rem;margin:0 auto;padding:0 1.25rem 4rem;min-height:100vh;min-height:100dvh}
 .eyebrow{
   font-family:var(--util); font-size:.66rem; font-weight:600;
   letter-spacing:.18em; text-transform:uppercase; color:var(--rubric);
@@ -205,7 +205,8 @@ body{padding-bottom:0}
 .tabbar{
   position:fixed;left:0;right:0;bottom:0;z-index:60;
   display:grid;grid-template-columns:repeat(4,1fr);
-  background:color-mix(in srgb,var(--ground) 92%,transparent);
+  background:var(--ground);
+  background:color-mix(in srgb,var(--ground) 94%,transparent);
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   border-top:1px solid var(--rule);
   padding:.45rem .3rem calc(.45rem + env(safe-area-inset-bottom));
@@ -251,7 +252,9 @@ body{padding-bottom:0}
   text-transform:uppercase;color:var(--rubric);
   margin:2.4rem 0 .9rem;
 }
-.pagehead{padding:calc(1.6rem + env(safe-area-inset-top)) 0 .3rem}
+.pagehead{padding:calc(1.9rem + env(safe-area-inset-top)) 0 .3rem}
+/* The tab bar is fixed; nothing in the page may sit under it. */
+body{overflow-x:hidden}
 .pagehead h2{font-size:1.5rem;margin:0 0 .3rem;font-weight:400;line-height:1.2}
 .pagehead p{font-family:var(--util);font-size:.7rem;line-height:1.75;color:var(--muted);margin:0}
 
