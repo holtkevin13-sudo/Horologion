@@ -11,6 +11,7 @@ function P(t, times){ return {t:'p', c:t, x:times||''}; }  // prayer text
 function V(t){ return {t:'v', c:t}; }            // psalm verse / antiphon
 function H(t){ return {t:'h', c:t}; }            // sub-heading
 function PS(n){ return {t:'ps', n:n, c:''}; }    // a psalm, resolved at render
+function HK(){ return {t:'hk', c:''}; }          // 'O Heavenly King', seasonal
 
 /* ---- shared building blocks ---- */
 var BEGINNING = [
@@ -23,16 +24,35 @@ var BEGINNING = [
 
 var TRISAGION = [
   H('The Trisagion Prayers'),
-  P('O Heavenly King, Comforter, Spirit of Truth, Who art everywhere present and fillest all things, Treasury of good things and Giver of life: come and abide in us, and cleanse us from every impurity, and save our souls, O Good One.'),
+  HK(),
+
   P('Holy God, Holy Mighty, Holy Immortal, have mercy on us.', 'Thrice'),
   P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen.'),
   P('O Most Holy Trinity, have mercy on us. O Lord, blot out our sins. O Master, pardon our iniquities. O Holy One, visit and heal our infirmities, for Thy name\u2019s sake.'),
   P('Lord, have mercy.', 'Thrice'),
   P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen.'),
-  P('Our Father, Who art in the heavens, hallowed be Thy name. Thy kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread, and forgive us our debts, as we forgive our debtors. And lead us not into temptation, but deliver us from the evil one.'),
+  P('Our Father, Who art in the heavens, hallowed be Thy name. Thy kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread, and forgive us our debts, as we forgive our debtors. And lead us not into temptation, but deliver us from the evil one.')
+];
+
+/* The remainder of the Usual Beginning as the Horologion has it. It introduces
+   the psalms of an office, so it belongs to the Hours, the Midnight Office,
+   Compline and the Typika — not to the morning rule, which has its own. */
+var HOROLOGION_TAIL = [
   P('Lord, have mercy.', 'Twelve times'),
   P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen.'),
   P('O come, let us worship God our King. O come, let us worship and fall down before Christ our King and God. O come, let us worship and fall down before Christ Himself, our King and our God.')
+];
+
+/* The morning rule's own continuation: the Troparia to the Holy Trinity, which
+   the Horologion tail had been displacing. */
+var MORNING_TROPARIA = [
+  H('Troparia to the Holy Trinity'),
+  P('Having risen from sleep, we fall down before Thee, O Good One, and we cry aloud to Thee the angelic hymn, O Mighty One: Holy, Holy, Holy art Thou, O God; through the Theotokos, have mercy on us.'),
+  P('Glory to the Father, and to the Son, and to the Holy Spirit.'),
+  P('From bed and sleep hast Thou raised me up, O Lord; enlighten my mind and heart, and open my lips that I may hymn Thee, O Holy Trinity: Holy, Holy, Holy art Thou, O God; through the Theotokos, have mercy on us.'),
+  P('Both now and ever, and unto the ages of ages. Amen.'),
+  P('Suddenly the Judge shall come, and the deeds of each shall be laid bare; but with fear do we cry at midnight: Holy, Holy, Holy art Thou, O God; through the Theotokos, have mercy on us.'),
+  P('Lord, have mercy.', 'Twelve times')
 ];
 
 var THOU_WHO_AT_ALL_TIMES = P('O Thou Who at all times and at every hour, both in heaven and on earth, art worshipped and glorified, O Christ God, long-suffering, plenteous in mercy and compassion, Who lovest the righteous and hast mercy on sinners, Who callest all to salvation through the promise of good things to come: do Thou Thyself, O Lord, receive our prayers at this hour, and guide our life toward Thy commandments. Sanctify our souls, make chaste our bodies, correct our thoughts, purify our intentions, and deliver us from every sorrow, evil and distress. Compass us about with Thy holy angels, that guarded and guided by their host we may attain to the unity of the faith and to the knowledge of Thine unapproachable glory; for blessed art Thou unto the ages of ages. Amen.');
@@ -46,7 +66,7 @@ var HOUR_ENDING = [
   P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen.'),
   MORE_HONORABLE,
   P('In the name of the Lord, father, bless.'),
-  R('If praying alone, say:'),
+  R('This is the reader\u2019s request for the priest\u2019s blessing. Praying alone, pass over it and say:'),
   P('Through the prayers of our holy fathers, O Lord Jesus Christ our God, have mercy on us. Amen.')
 ];
 
@@ -58,7 +78,7 @@ var PRAYERS = {
 /* ---------------- MIDNIGHT ---------------- */
 midnight: [
   { id:'mid-office', title:'The Midnight Office', by:'Kept by monastics through the night watch; abridged here for private use',
-    body: [].concat(BEGINNING, TRISAGION, [
+    body: [].concat(BEGINNING, TRISAGION, HOROLOGION_TAIL, [
       PS(50),
       H('Troparia of the Midnight Hour'),
       P('Behold, the Bridegroom cometh at midnight, and blessed is the servant whom He shall find watching; but unworthy is he whom He shall find heedless. Beware, therefore, O my soul, and be not weighed down with sleep, lest thou be given over to death and shut out from the Kingdom. But rouse thyself and cry: Holy, holy, holy art Thou, O God; through the Theotokos have mercy on us.'),
@@ -75,7 +95,13 @@ midnight: [
 /* ---------------- MORNING ---------------- */
 morning: [
   { id:'m-open', title:'The Beginning', by:'Rising from sleep',
-    body: [].concat(BEGINNING, TRISAGION) },
+    body: [].concat(BEGINNING, TRISAGION, MORNING_TROPARIA, [
+      P('O come, let us worship God our King. O come, let us worship and fall down before Christ our King and God. O come, let us worship and fall down before Christ Himself, our King and our God.'),
+      PS(50),
+      H('The Symbol of Faith'),
+      P('I believe in one God, the Father Almighty, Maker of heaven and earth, and of all things visible and invisible. And in one Lord Jesus Christ, the Son of God, the Only-begotten, begotten of the Father before all ages; Light of Light, true God of true God; begotten, not made; of one essence with the Father, by Whom all things were made; Who for us men and for our salvation came down from the heavens, and was incarnate of the Holy Spirit and the Virgin Mary, and became man; and was crucified for us under Pontius Pilate, and suffered, and was buried; and arose again on the third day according to the Scriptures; and ascended into the heavens, and sitteth at the right hand of the Father; and shall come again with glory to judge the living and the dead, Whose kingdom shall have no end.'),
+      P('And in the Holy Spirit, the Lord, the Giver of life, Who proceedeth from the Father; Who with the Father and the Son together is worshipped and glorified; Who spake by the prophets. In one Holy, Catholic and Apostolic Church. I confess one baptism for the remission of sins. I look for the resurrection of the dead, and the life of the age to come. Amen.')
+    ]) },
 
   { id:'m-publican', title:'The Prayer of the Publican', by:'Luke 18:13',
     body:[ R('Bow low and say:'), P('O God, be merciful to me a sinner.') ] },
@@ -149,7 +175,7 @@ morning: [
 /* ---------------- THE HOURS ---------------- */
 first: [
   { id:'h1', title:'The First Hour', by:'Prayed at daybreak \u2014 the reader\u2019s form, abridged',
-    body:[].concat(TRISAGION, [
+    body:[].concat(TRISAGION, HOROLOGION_TAIL, [
       R('Psalms 5, 89 and 100 are appointed.'),
       PS(5),
       PS(89),
@@ -170,7 +196,7 @@ first: [
 ],
 third: [
   { id:'h3', title:'The Third Hour', by:'The descent of the Holy Spirit at Pentecost \u2014 the reader\u2019s form, abridged',
-    body:[].concat(TRISAGION, [
+    body:[].concat(TRISAGION, HOROLOGION_TAIL, [
       R('Psalms 16, 24 and 50 are appointed.'),
       PS(16),
       PS(24),
@@ -193,7 +219,7 @@ third: [
 ],
 sixth: [
   { id:'h6', title:'The Sixth Hour', by:'The nailing of the Lord to the Cross \u2014 the reader\u2019s form, abridged',
-    body:[].concat(TRISAGION, [
+    body:[].concat(TRISAGION, HOROLOGION_TAIL, [
       R('Psalms 53, 54 and 90 are appointed.'),
       PS(53),
       PS(54),
@@ -216,7 +242,7 @@ sixth: [
 ],
 ninth: [
   { id:'h9', title:'The Ninth Hour', by:'The death of the Lord in the flesh \u2014 the reader\u2019s form, abridged',
-    body:[].concat(TRISAGION, [
+    body:[].concat(TRISAGION, HOROLOGION_TAIL, [
       R('Psalms 83, 84 and 85 are appointed.'),
       PS(83),
       PS(84),
@@ -245,7 +271,7 @@ evening: [
       R('Stand reverently, make the sign of the Cross, and say:'),
       P('In the name of the Father, and of the Son, and of the Holy Spirit. Amen.'),
       P('Glory to Thee, our God, glory to Thee.')
-    ], TRISAGION) },
+    ], TRISAGION, HOROLOGION_TAIL) },
 
   { id:'e-mac', title:'O Eternal God and King of All Creation', by:'First evening prayer of St. Macarius the Great',
     body:[
@@ -323,7 +349,7 @@ evening: [
 /* ---------------- COMPLINE ---------------- */
 compline: [
   { id:'c-small', title:'Small Compline', by:'The completion of the day \u2014 abridged for private use',
-    body:[].concat(TRISAGION, [
+    body:[].concat(TRISAGION, HOROLOGION_TAIL, [
       H('The Symbol of Faith'),
       P('I believe in one God, the Father Almighty, Maker of heaven and earth, and of all things visible and invisible. And in one Lord Jesus Christ, the Son of God, the Only-begotten, begotten of the Father before all ages; Light of Light, true God of true God; begotten, not made; of one essence with the Father, by Whom all things were made; Who for us men and for our salvation came down from the heavens, and was incarnate of the Holy Spirit and the Virgin Mary, and became man; and was crucified for us under Pontius Pilate, and suffered, and was buried; and arose again on the third day according to the Scriptures; and ascended into the heavens, and sitteth at the right hand of the Father; and shall come again with glory to judge the living and the dead, Whose kingdom shall have no end.'),
       P('And in the Holy Spirit, the Lord, the Giver of life, Who proceedeth from the Father; Who with the Father and the Son together is worshipped and glorified; Who spake by the prophets. In one Holy, Catholic and Apostolic Church. I confess one baptism for the remission of sins. I look for the resurrection of the dead, and the life of the age to come. Amen.'),
@@ -590,7 +616,7 @@ typika: [
       R('Of Thy Mystical Supper, O Son of God, accept me today as a communicant; for I will not speak of Thy Mystery to Thine enemies, neither like Judas will I give Thee a kiss; but like the thief will I confess Thee: Remember me, O Lord, in Thy Kingdom.')
     ] },
   { id:'typika', title:'The Typika', by:'Read when the Divine Liturgy cannot be attended',
-    body:[].concat(TRISAGION, [
+    body:[].concat(TRISAGION, HOROLOGION_TAIL, [
       PS(102),
       P('Glory to the Father, and to the Son, and to the Holy Spirit.'),
       PS(145),
