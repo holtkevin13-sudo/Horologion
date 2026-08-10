@@ -394,3 +394,37 @@ div.notice{cursor:default}
 }
 .resume b{color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase}
 .resume:active{background:var(--raise)}
+
+/* ============================================================
+   Psalms — collapsed by default so an office is not a wall of text
+   ============================================================ */
+.psalm{
+  border:1px solid var(--rule);border-radius:3px;background:var(--ground-2);
+  margin:0 0 1.15rem;overflow:hidden;
+}
+.psalm summary{
+  list-style:none;cursor:pointer;padding:.8rem .9rem;
+  display:flex;align-items:baseline;justify-content:space-between;gap:.8rem;
+}
+.psalm summary::-webkit-details-marker{display:none}
+.psalm .ps-n{font-family:var(--display);font-size:1.06rem;color:var(--gold)}
+.psalm .ps-c{
+  font-family:var(--util);font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap;
+}
+.psalm summary::after{
+  content:"";width:.45rem;height:.45rem;flex:none;
+  border-right:1px solid var(--gold-dim);border-bottom:1px solid var(--gold-dim);
+  transform:rotate(45deg);margin-left:.2rem;margin-bottom:.2rem;
+}
+.psalm[open] summary::after{transform:rotate(-135deg);margin-bottom:-.1rem}
+.psalm[open] summary{border-bottom:1px solid var(--rule)}
+.psalm-body{padding:.9rem .9rem .3rem}
+.psalm .pv{
+  margin:0 0 .75rem;line-height:1.75;color:var(--ink-dim);
+  text-indent:-1.35rem;padding-left:1.35rem;
+}
+.psalm .pvn{
+  font-family:var(--util);font-size:.58rem;color:var(--gold-dim);
+  vertical-align:.35em;margin-right:.5rem;
+}
