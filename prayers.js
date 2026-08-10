@@ -741,20 +741,57 @@ var RULE = [
 ];
 
 
-PRAYERS.patron = [
-  { id:'patron-1', title:'To My Patron Saint', by:'The saint whose name you bear',
+/* ============================================================
+   THE PATRON SAINT SLOT
+
+   One intercession slot follows whatever name is set in Settings.
+   Where a saint's own hymns are held in SAINT_LIB below, they are
+   shown first; otherwise the general prayer alone is used, with the
+   name substituted for (Name).
+
+   To add a saint: add a lowercase key with the same block helpers.
+   ============================================================ */
+
+var SAINT_LIB = {
+  silouan: PRAYERS.silouan,
+
+  herman: [
+    { id:'herman', title:'Troparion and Kontakion', by:'St. Herman of Alaska, \u20201837; glorified 1970',
+      body:[
+        H('Troparion, Tone 7'),
+        P('O blessed Father Herman of Alaska, north star of Christ\u2019s holy Church: the light of thy life and great deeds guideth those who follow the Orthodox way. Together we lift high the Holy Cross thou didst plant firmly in America. Let all behold and glorify Jesus Christ, singing His holy Resurrection.'),
+        H('Magnification'),
+        P('We bless thee, O venerable Father Herman, and we honor thy holy memory, thou instructor of monastics and converser with the angels.'),
+        R('The first saint glorified in North America, he lived on Spruce Island in Alaska, taught the Aleut people, and called himself the lowliest servant of these lands.')
+      ] }
+  ]
+};
+
+var PATRON_PRAYER = {
+  id:'patron-prayer', title:'To My Patron Saint', by:'The saint whose name you bear',
+  body:[
+    P('Pray unto God for me, O holy saint (Name), for I fervently flee unto thee, the speedy helper and intercessor for my soul.'),
+    H('Prayer'),
+    P('O holy (Name), given me at holy baptism as my guardian and my namesake before God: I am unworthy to bear thy name, for thou didst run the race to its end, while I have scarcely begun; thou didst keep the faith, while I am inconstant in it.'),
+    P('Yet thou dost not despise the one entrusted to thee. Stand for me before the throne of Christ our God. Ask for me the forgiveness of my sins, patience in what I must bear, and the mercy of God at the hour when I shall have nothing else to plead. Teach me by thine own example that what was possible for thee is possible also for me, since it is the same Lord Who worketh in us both.'),
+    P('Through thy prayers, O holy (Name), and through the prayers of the most holy Theotokos, may Christ our God have mercy on me and save me. Amen.'),
+    R('If your parish keeps the feast of your saint, that day is your name day; it is customary to commune, and to be greeted with the words: Many years.')
+  ]
+};
+
+var PATRON_UNSET = {
+  id:'patron-unset', title:'Your Patron Saint', by:'Not yet set',
+  body:[
+    R('Open Settings, by the cog on the Today screen, and enter the name of the saint you were given at baptism. The prayers on this page will then be said in his or her name, and the name will appear in your morning prayers also.'),
+    P('Pray unto God for me, O holy saint, whose name I bear, for I fervently flee unto thee, the speedy helper and intercessor for my soul.'),
+    R('If you do not know which saint you were named for, your priest will know, or it can be found from the day of your baptism in the calendar.')
+  ]
+};
+
+PRAYERS.commem = [
+  { id:'commem', title:'Those I Remember', by:'The living and the departed, by name',
     body:[
-      R('The prayers below are in the customary form, with the name you have set in Settings.'),
-      P('Pray unto God for me, O holy saint (Name), for I fervently flee unto thee, the speedy helper and intercessor for my soul.'),
-      H('Prayer'),
-      P('O holy (Name), given me at holy baptism as my guardian and my namesake before God: I am unworthy to bear thy name, for thou didst run the race to its end, while I have scarcely begun; thou didst keep the faith, while I am inconstant in it.'),
-      P('Yet thou dost not despise the one entrusted to thee. Stand for me before the throne of Christ our God. Ask for me the forgiveness of my sins, patience in what I must bear, and the mercy of God at the hour when I shall have nothing else to plead. Teach me by thine own example that the thing which was possible for thee is possible also for me, since it is the same Lord Who worketh in us both.'),
-      P('Through thy prayers, O holy (Name), and through the prayers of the most holy Theotokos, may Christ our God have mercy on me and save me. Amen.'),
-      R('If your parish keeps the feast of your saint, that day is your name day; it is customary to commune, and to be greeted with the words: Many years.')
-    ] },
-  { id:'patron-2', title:'Those I Remember', by:'The living and the departed, by name',
-    body:[
-      R('The names you have entered in Settings are inserted below. They are held on your device alone.'),
+      R('The names set in Settings are read below. They are held on this device alone.'),
       H('For the Living'),
       P('O Lord, save and have mercy on Thy servants (Living); and on my spiritual father, my parents, my family and my kinsfolk, my friends and my enemies, on all who have asked my unworthy prayers, and on all Orthodox Christians; and grant them Thine earthly and heavenly good things.'),
       H('For the Departed'),
@@ -764,5 +801,6 @@ PRAYERS.patron = [
     ] }
 ];
 
+PRAYERS.patron = [PATRON_UNSET];          // rebuilt on every render
 CATS.patron = 'My Patron Saint';
-INTRO.patron = 'Set the names in Settings and they appear in these prayers.';
+CATS.commem = 'Those I Remember';
