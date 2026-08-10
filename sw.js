@@ -1,7 +1,7 @@
 /* Horologion service worker.
    Bump CACHE whenever you change any file below, or phones will
    keep serving the old copy. That is the one maintenance chore. */
-const CACHE = 'prayerbook-v11';
+const CACHE = 'prayerbook-v12';
 
 const ASSETS = [
   './',
