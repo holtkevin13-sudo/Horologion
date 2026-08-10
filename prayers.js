@@ -1,6 +1,6 @@
 /* ============================================================
    HOROLOGION — prayer texts
-   Traditional English (Jordanville-family), in the received order.
+   Traditional English, in the order received across the Orthodox Church.
    Rubrics are marked R(), prayers P(), psalm verses V(), headings H().
    Editing a prayer here changes it everywhere it appears.
    ============================================================ */
@@ -696,7 +696,7 @@ PRAYERS.about = [
       P('The services of the daily cycle are here so that you can see the shape of the Church\u2019s prayer and enter into it as you are able \u2014 the Sixth Hour at midday, the Typika on a Sunday you cannot get to church, Compline when the day has been long. They are an open door, not a list to be completed. No layman is expected to keep all eight, and the horarium they belong to is monastic.'),
       P('The counsel of the Fathers on this is consistent: a small rule kept faithfully is worth more than a large one taken up in zeal and abandoned in discouragement. Begin with less than you think you can manage, keep it, and let your spiritual father tell you when to add. A rule is set with his blessing, because he knows what a particular soul can bear and this book does not.'),
       H('On the texts'),
-      P('The prayers here are given in the traditional English received in the Slavic usage, in the customary order. Where a prayer is a supplication composed in the traditional manner rather than a received text, that is stated on the page itself.')
+      P('The prayers here are given in the traditional English in which they are prayed across the Orthodox Church, in the customary order. Usages differ between churches in small things \u2014 the order of a prayer, the wording of a phrase, the reckoning of a fast \u2014 and where they do, your own parish is the measure. Where a prayer is a supplication composed in the traditional manner rather than a received text, that is stated on the page itself.')
     ] }
 ];
 
@@ -789,18 +789,91 @@ var PATRON_UNSET = {
 };
 
 PRAYERS.commem = [
-  { id:'commem', title:'Those I Remember', by:'The living and the departed, by name',
+  { id:'commem-litany', title:'The Commemoration', by:'From the litanies of the Church, with your own names',
     body:[
-      R('The names set in Settings are read below. They are held on this device alone.'),
-      H('For the Living'),
-      P('O Lord, save and have mercy on Thy servants (Living); and on my spiritual father, my parents, my family and my kinsfolk, my friends and my enemies, on all who have asked my unworthy prayers, and on all Orthodox Christians; and grant them Thine earthly and heavenly good things.'),
-      H('For the Departed'),
-      P('O Lord, remember the souls of Thy departed servants (Departed); and all Orthodox Christians who have fallen asleep in the hope of the resurrection unto life eternal. Forgive them every transgression, voluntary and involuntary, and grant them the Kingdom and the communion of Thine eternal good things, and the enjoyment of Thine endless and blessed life.'),
+      R('The Church prays these petitions aloud at every Liturgy. What follows is the layman\u2019s form of them, with the names you have set in Settings. Read as much or as little as the day allows.'),
+      P('In peace let us pray to the Lord. Lord, have mercy.'),
+      H('For the Church'),
+      P('Again we pray for our bishop (Bishop), for our father (Priest), for the honorable priesthood and the diaconate in Christ, for all the clergy and the people, and for the peace and welfare of the holy churches of God and the union of all: let us pray to the Lord. Lord, have mercy.'),
+      P('For this holy house, and for them that enter it with faith, reverence and the fear of God, let us pray to the Lord. Lord, have mercy.'),
+      H('For this land'),
+      P('For this land, for its authorities and for all who serve in her defense, and for all who dwell therein: that we may lead a calm and peaceful life in all godliness and sanctity, let us pray to the Lord. Lord, have mercy.'),
+      P('For seasonable weather, for abundance of the fruits of the earth, and for peaceful times, let us pray to the Lord. Lord, have mercy.'),
+      H('For the living'),
+      P('Again we pray for the servants of God (Living); and for my parents, my family and my kinsfolk, my friends and my enemies, for all who have asked my unworthy prayers, and for all Orthodox Christians: that the Lord may keep them in health and peace, and grant them His earthly and heavenly good things. Lord, have mercy.', 'Thrice'),
+      H('For the suffering'),
+      P('For those who are sick and who suffer; for those in prison and in captivity; for travelers by land, by sea and by air; for the hungry, the homeless, the widow and the orphan; for those who are alone and forgotten, and for those who have none to pray for them: let us pray to the Lord. Lord, have mercy.'),
+      H('For what is on my heart'),
+      R('The intentions set in Settings are read here.'),
+      P('And we pray also for these things: (Intentions). O Lord, Thou knowest what is needful before we ask; grant what is profitable for our salvation, and where my asking is amiss, do Thou answer as Thou knowest best. Lord, have mercy.'),
+      H('For the departed'),
+      P('Again we pray for the repose of the souls of the departed servants of God (Departed); and of all Orthodox Christians who have fallen asleep in the hope of the resurrection unto life eternal. Forgive them every transgression, voluntary and involuntary, and grant them the Kingdom and the communion of Thine eternal good things, and the enjoyment of Thine endless and blessed life. Lord, have mercy.', 'Thrice'),
       P('Memory eternal.', 'Thrice'),
-      R('The Church prays for the departed on the third, ninth and fortieth days, and on the anniversary of their repose. Their names may also be given to the priest for commemoration at the Liturgy, which is of greater profit to them than anything we can say at home.')
+      H('Conclusion'),
+      P('For Thou art a merciful God Who lovest mankind, and unto Thee do we send up glory: to the Father, and to the Son, and to the Holy Spirit, now and ever, and unto the ages of ages. Amen.'),
+      R('Names may also be given to your priest for commemoration at the Liturgy, where they are remembered at the altar. That is of greater profit to the living and the departed alike than anything said at home.')
     ] }
 ];
 
 PRAYERS.patron = [PATRON_UNSET];          // rebuilt on every render
 CATS.patron = 'My Patron Saint';
-CATS.commem = 'Those I Remember';
+CATS.commem = 'The Commemoration';
+
+/* ============================================================
+   HOLY COMMUNION
+   ============================================================ */
+PRAYERS.communion = [
+  { id:'comm-before', title:'Before Holy Communion', by:'Read the evening before, or the morning of',
+    body:[
+      R('The full preparation is the Canon of Preparation and the Akathist, read the evening before, together with the prayers below; one keeps the fast from midnight, and comes having been to confession as your spiritual father directs. What follows are the prayers themselves. Do not approach the Chalice without your priest\u2019s blessing.'),
+      P('O Lord my God, I know that I am not worthy nor sufficient that Thou shouldst enter under the roof of the house of my soul, for it is all deserted and in ruins, and Thou hast not in me a place worthy to lay Thy head. But as Thou didst humble Thyself from on high for our sake, so now humble Thyself to my lowliness. And as Thou didst consent to lie in a cave and in a manger of dumb beasts, so also consent to enter into the manger of mine unspiritual soul and into my defiled body.'),
+      P('And as Thou didst not disdain to enter and to sup with sinners in the house of Simon the leper, so consent also to enter the house of my lowly soul, leprous and sinful. And as Thou didst not cast out the sinful woman who came and touched Thee, so also have compassion on me, a sinner, who come and touch Thee. And grant that I may partake of Thine all-holy Body and precious Blood for the sanctification, enlightenment and strengthening of my lowly soul and body, unto the relief of the burden of my many sins, unto my preservation from every diabolical practice, and unto the amendment and establishment of my humble and wretched life. Amen.'),
+      H('Prayer of St. Basil the Great'),
+      P('O Master Lord Jesus Christ our God, Who alone hast authority to forgive men their sins: as Thou art good and lovest mankind, overlook all mine offenses, whether committed with knowledge or in ignorance; and vouchsafe me to partake without condemnation of Thy divine, most glorious, immaculate and life-giving Mysteries, not unto punishment, nor unto an increase of sins, but unto purification and sanctification, and as a pledge of the life and kingdom to come, as a protection, a help, and a repelling of adversaries, and for the blotting out of my many transgressions.'),
+      P('For Thou art a God of mercy and compassion and love for mankind, and unto Thee do we send up glory, together with the Father and the Holy Spirit, now and ever, and unto the ages of ages. Amen.'),
+      H('Approaching the Chalice'),
+      R('When the priest comes forth with the Chalice, bow, cross your arms upon your breast, and say your baptismal name clearly. Then:'),
+      P('I believe, O Lord, and I confess that Thou art truly the Christ, the Son of the living God, Who camest into the world to save sinners, of whom I am first. I believe also that this is truly Thine own most pure Body, and that this is truly Thine own precious Blood.'),
+      P('Wherefore I pray Thee: have mercy on me and forgive my transgressions, both voluntary and involuntary, of word and of deed, committed in knowledge and in ignorance; and vouchsafe me to partake without condemnation of Thine immaculate Mysteries, unto the remission of sins and unto life everlasting. Amen.'),
+      P('Of Thy Mystical Supper, O Son of God, accept me today as a communicant; for I will not speak of Thy Mystery to Thine enemies, neither like Judas will I give Thee a kiss; but like the thief will I confess Thee: Remember me, O Lord, in Thy Kingdom.'),
+      P('Let not the communion of Thy Holy Mysteries be unto me for judgment or condemnation, O Lord, but for the healing of soul and body. Amen.')
+    ] },
+
+  { id:'comm-after', title:'Thanksgiving After Communion', by:'Read at once, before any other thing',
+    body:[
+      R('Having communed, do not hurry away. These are read after the Liturgy, before the day resumes.'),
+      P('Glory to Thee, O God. Glory to Thee, O God. Glory to Thee, O God.'),
+      H('Prayer of Thanksgiving'),
+      P('I thank Thee, O Lord my God, that Thou hast not rejected me, a sinner, but hast vouchsafed me to be a communicant of Thy Holy Things. I thank Thee that Thou hast vouchsafed me, the unworthy, to partake of Thy most pure and heavenly Gifts.'),
+      P('But, O Master, Lover of mankind, Who didst die and rise again for our sake, and didst bestow upon us these dread and life-giving Mysteries for the well-being and sanctification of our souls and bodies: grant that these may be even unto me for the healing of soul and body, for the averting of everything hostile, for the enlightenment of the eyes of my heart, for the peace of the powers of my soul, for faith unashamed, for love unfeigned, for the fullness of wisdom, for the keeping of Thy commandments, for an increase of Thy divine grace, and for the attainment of Thy Kingdom.'),
+      P('That being preserved by them in Thy holiness, I may ever be mindful of Thy grace, and no longer live for myself but for Thee, our Master and Benefactor. And thus, when I have departed this life in the hope of life eternal, may I attain unto the everlasting rest, where the sound of them that keep festival is unceasing, and the delight of them that behold the ineffable beauty of Thy countenance is unending. For Thou art the true desire and the unutterable gladness of them that love Thee, O Christ our God, and all creation doth hymn Thee unto the ages. Amen.'),
+      H('Prayer of St. Basil the Great'),
+      P('O Master Christ God, King of the ages and Creator of all things: I thank Thee for all the good things which Thou hast given me, and for the communion of Thy most pure and life-giving Mysteries. I pray Thee, therefore, O Good One and Lover of mankind: keep me under Thy protection and in the shadow of Thy wings; and grant me, even until my last breath, to partake worthily and with a pure conscience of Thy Holy Things, unto the remission of sins and unto life eternal.'),
+      P('For Thou art the Bread of life, the Source of holiness, the Giver of good things, and unto Thee do we send up glory, together with the Father and the Holy Spirit, now and ever, and unto the ages of ages. Amen.'),
+      H('Prayer to the Most Holy Theotokos'),
+      P('O most holy Lady Theotokos, light of my darkened soul, my hope, my shelter, my refuge, my consolation and my joy: I thank thee that thou hast vouchsafed me, who am unworthy, to be a partaker of the most pure Body and precious Blood of thy Son.'),
+      P('Do thou who gavest birth to the true Light enlighten the spiritual eyes of my heart. Thou who bore the Source of immortality, quicken me who am dead in sin. Thou who art the loving Mother of the merciful God, have mercy on me, and grant me compunction and contrition of heart, humility in my thoughts, and the recall of my reasonings from captivity. And vouchsafe me until my last breath to receive without condemnation the sanctification of the most pure Mysteries, unto the healing of soul and body. Amen.'),
+      P('Now lettest Thou Thy servant depart in peace, O Master, according to Thy word; for mine eyes have seen Thy salvation, which Thou hast prepared before the face of all peoples: a light of revelation for the Gentiles, and the glory of Thy people Israel.'),
+      R('Glory to God for all things.')
+    ] }
+];
+CATS.communion = 'Holy Communion';
+INTRO.communion = 'Approach only with the blessing of your spiritual father.';
+
+/* Added to the occasional prayers */
+PRAYERS.occasional.push(
+  { id:'o-sick', title:'For the Sick', by:'For another, or for oneself',
+    body:[
+      P('O Lord Almighty, Physician of our souls and bodies, Who dost cast down and raise up, chastise and heal also: do Thou now in Thy great mercy visit Thy servants who are sick, and stretch forth Thine arm which is full of healing and health.'),
+      P('Raise them up from their bed and from their couch of affliction, and grant them health and soundness, that they may live to serve Thee. Turn their sickness into health, and their sorrow into gladness; and if it be Thy will to take them to Thyself, grant them a Christian ending to their life, painless, blameless and peaceful, and a good defense before Thy dread judgment seat.'),
+      P('For Thou art the Fountain of healing, O God our God, and unto Thee do we send up glory, to the Father, and to the Son, and to the Holy Spirit, now and ever, and unto the ages of ages. Amen.'),
+      R('The Church also has the Mystery of Holy Unction for the sick. Ask your priest; a prayer at home does not take its place.')
+    ] },
+  { id:'o-forgive', title:'For Those Who Have Wronged Me', by:'And for those I have wronged',
+    body:[
+      R('Hard to say, and the more necessary for that.'),
+      P('O Lord Jesus Christ, Who didst pray for them that crucified Thee: forgive those who have wronged me, and forgive me who have wronged others. Take from my heart all bitterness, all keeping of accounts, and all desire that they should suffer for what they have done.'),
+      P('I cannot yet feel what I am saying; grant that the words may go before the heart, and that the heart may follow after. Bless those who have grieved me, and do them good, and save them. And where I am the one at fault, give me the plainness of speech to say so, without excuse and without delay.'),
+      P('For Thou hast said that if we forgive not men their trespasses, neither will our Father forgive us ours. Amen.')
+    ] }
+);
