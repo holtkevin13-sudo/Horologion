@@ -800,7 +800,7 @@ PRAYERS.commem = [
       P('For this land, for its authorities and for all who serve in her defense, and for all who dwell therein: that we may lead a calm and peaceful life in all godliness and sanctity, let us pray to the Lord. Lord, have mercy.'),
       P('For seasonable weather, for abundance of the fruits of the earth, and for peaceful times, let us pray to the Lord. Lord, have mercy.'),
       H('For the living'),
-      P('Again we pray for the servants of God (Living); and for my parents, my family and my kinsfolk, my friends and my enemies, for all who have asked my unworthy prayers, and for all Orthodox Christians: that the Lord may keep them in health and peace, and grant them His earthly and heavenly good things. Lord, have mercy.', 'Thrice'),
+      P('Again we pray for the servants of God (Living); for (Sponsor); and for my parents, my family and my kinsfolk, my friends and my enemies, for all who have asked my unworthy prayers, and for all Orthodox Christians: that the Lord may keep them in health and peace, and grant them His earthly and heavenly good things. Lord, have mercy.', 'Thrice'),
       H('For the suffering'),
       P('For those who are sick and who suffer; for those in prison and in captivity; for travelers by land, by sea and by air; for the hungry, the homeless, the widow and the orphan; for those who are alone and forgotten, and for those who have none to pray for them: let us pray to the Lord. Lord, have mercy.'),
       H('For what is on my heart'),
