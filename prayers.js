@@ -10,6 +10,7 @@ function R(t){ return {t:'r', c:t}; }            // rubric (red instruction)
 function P(t, times){ return {t:'p', c:t, x:times||''}; }  // prayer text
 function V(t){ return {t:'v', c:t}; }            // psalm verse / antiphon
 function H(t){ return {t:'h', c:t}; }            // sub-heading
+function PS(n){ return {t:'ps', n:n, c:''}; }    // a psalm, resolved at render
 
 /* ---- shared building blocks ---- */
 var BEGINNING = [
@@ -58,9 +59,7 @@ var PRAYERS = {
 midnight: [
   { id:'mid-office', title:'The Midnight Office', by:'Kept by monastics through the night watch; abridged here for private use',
     body: [].concat(BEGINNING, TRISAGION, [
-      H('Psalm 50'),
-      V('Have mercy on me, O God, according to Thy great mercy; and according to the multitude of Thy compassions blot out my transgression. Wash me thoroughly from mine iniquity, and cleanse me from my sin. For I know mine iniquity, and my sin is ever before me. Against Thee only have I sinned and done this evil before Thee, that Thou mightest be justified in Thy words, and prevail when Thou art judged.'),
-      V('Create in me a clean heart, O God, and renew a right spirit within me. Cast me not away from Thy presence, and take not Thy Holy Spirit from me. Restore unto me the joy of Thy salvation, and with Thy governing Spirit establish me. A sacrifice unto God is a broken spirit; a heart that is broken and humbled God will not despise.'),
+      PS(50),
       H('Troparia of the Midnight Hour'),
       P('Behold, the Bridegroom cometh at midnight, and blessed is the servant whom He shall find watching; but unworthy is he whom He shall find heedless. Beware, therefore, O my soul, and be not weighed down with sleep, lest thou be given over to death and shut out from the Kingdom. But rouse thyself and cry: Holy, holy, holy art Thou, O God; through the Theotokos have mercy on us.'),
       P('Meditating on that fearful day, O my soul, be watchful, and kindle thy lamp, filling it with oil; for thou knowest not when the voice shall come that saith unto thee: Behold, the Bridegroom. Beware then, O my soul, lest thou slumber and be left knocking without, like the five virgins; but persevere in watchfulness, that thou mayest go forth with gladness to meet Christ our God, and that He may grant thee the divine bridal chamber of His glory.'),
@@ -151,8 +150,10 @@ morning: [
 first: [
   { id:'h1', title:'The First Hour', by:'Prayed at daybreak \u2014 the reader\u2019s form, abridged',
     body:[].concat(TRISAGION, [
-      R('Psalms 5, 89 and 100 are appointed. If time is short, read the following verses in their place:'),
-      V('My words give ear unto, O Lord; hear my cry. Attend unto the voice of my supplication, my King and my God, for unto Thee will I pray, O Lord. In the morning Thou shalt hear my voice; in the morning shall I stand before Thee, and Thou shalt look upon me.'),
+      R('Psalms 5, 89 and 100 are appointed.'),
+      PS(5),
+      PS(89),
+      PS(100),
       P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen. Alleluia, alleluia, alleluia, glory to Thee, O God.', 'Thrice'),
       H('Troparion of the Hour'),
       P('In the morning hear my voice, my King and my God.'),
@@ -170,8 +171,10 @@ first: [
 third: [
   { id:'h3', title:'The Third Hour', by:'The descent of the Holy Spirit at Pentecost \u2014 the reader\u2019s form, abridged',
     body:[].concat(TRISAGION, [
-      R('Psalms 16, 24 and 50 are appointed. If time is short, read the following verses in their place:'),
-      V('Have mercy on me, O God, according to Thy great mercy, and according to the multitude of Thy compassions blot out my transgression. Wash me thoroughly from mine iniquity, and cleanse me from my sin.'),
+      R('Psalms 16, 24 and 50 are appointed.'),
+      PS(16),
+      PS(24),
+      PS(50),
       P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen. Alleluia, alleluia, alleluia, glory to Thee, O God.', 'Thrice'),
       H('Troparion of the Hour'),
       P('O Lord, Who at the third hour didst send down Thy Most Holy Spirit upon Thine apostles: take Him not from us, O Good One, but renew Him in us who pray unto Thee.'),
@@ -191,8 +194,10 @@ third: [
 sixth: [
   { id:'h6', title:'The Sixth Hour', by:'The nailing of the Lord to the Cross \u2014 the reader\u2019s form, abridged',
     body:[].concat(TRISAGION, [
-      R('Psalms 53, 54 and 90 are appointed. If time is short, read the following verses in their place:'),
-      V('He that dwelleth in the help of the Most High shall abide in the shelter of the God of heaven. He shall say unto the Lord: Thou art my helper and my refuge; He is my God, and I will hope in Him.'),
+      R('Psalms 53, 54 and 90 are appointed.'),
+      PS(53),
+      PS(54),
+      PS(90),
       P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen. Alleluia, alleluia, alleluia, glory to Thee, O God.', 'Thrice'),
       H('Troparion of the Hour'),
       P('O Thou Who on the sixth day and hour didst nail to the Cross the sin which rebellious Adam committed in Paradise: tear asunder also the handwriting of our transgressions, O Christ our God, and save us.'),
@@ -212,8 +217,10 @@ sixth: [
 ninth: [
   { id:'h9', title:'The Ninth Hour', by:'The death of the Lord in the flesh \u2014 the reader\u2019s form, abridged',
     body:[].concat(TRISAGION, [
-      R('Psalms 83, 84 and 85 are appointed. If time is short, read the following verses in their place:'),
-      V('How beloved are Thy dwellings, O Lord of hosts. My soul longeth and fainteth for the courts of the Lord; my heart and my flesh have rejoiced in the living God.'),
+      R('Psalms 83, 84 and 85 are appointed.'),
+      PS(83),
+      PS(84),
+      PS(85),
       P('Glory to the Father, and to the Son, and to the Holy Spirit, both now and ever, and unto the ages of ages. Amen. Alleluia, alleluia, alleluia, glory to Thee, O God.', 'Thrice'),
       H('Troparion of the Hour'),
       P('O Thou Who at the ninth hour didst for our sake taste of death in the flesh: mortify the wisdom of our flesh, O Christ our God, and save us.'),
@@ -516,8 +523,7 @@ vespers: [
     body:[
       R('Vespers is served in church, and with it the liturgical day begins. What follows is the fixed heart of the service, which never changes. The psalms, stichera and troparia appointed for each particular day are drawn from the Octoechos, the Menaion, the Triodion and the Pentecostarion, and are not contained in this book.'),
       H('The Introductory Psalm'),
-      V('Bless the Lord, O my soul. O Lord my God, Thou hast been magnified exceedingly. Confession and majesty hast Thou put on, Who coverest Thyself with light as with a garment, Who stretchest out the heavens as it were a curtain.'),
-      V('How magnified are Thy works, O Lord. In wisdom hast Thou made them all. The earth is filled with Thy creation. Glory to Thee, O Lord, Who hast made them all.'),
+      PS(103),
       H('O Gladsome Light'),
       R('The most ancient hymn of the Church still in daily use, sung as the evening lamps are lit.'),
       P('O gladsome Light of the holy glory of the Immortal Father, the heavenly, the holy, the blessed, O Jesus Christ: now that we have come to the setting of the sun and behold the light of evening, we praise God: Father, Son and Holy Spirit.'),
@@ -537,9 +543,8 @@ matins: [
     body:[
       R('Matins is served in church, and is the longest of the daily services. Its canons, katavasias and festal hymns change every day according to the saint or feast commemorated. What follows is the fixed frame within which all of that is set.'),
       H('The Six Psalms'),
-      R('Read in near darkness, in silence, without interruption: Psalms 3, 37, 62, 87, 102 and 142.'),
-      V('O Lord, how are they multiplied that afflict me. But Thou, O Lord, art my helper, my glory, and the lifter up of my head. I laid me down and slept; I awoke, for the Lord will help me.'),
-      V('O God, my God, unto Thee I rise early at dawn. My soul hath thirsted for Thee; how often hath my flesh longed after Thee in a land barren and untrodden and unwatered.'),
+      R('Read in near darkness, in silence, without interruption.'),
+      PS(3), PS(37), PS(62), PS(87), PS(102), PS(142),
       H('God Is the Lord'),
       P('God is the Lord, and hath appeared unto us. Blessed is he that cometh in the name of the Lord.'),
       R('Then the troparion of the day, and the canons appointed for the feast.'),
@@ -567,14 +572,9 @@ typika: [
     ] },
   { id:'typika', title:'The Typika', by:'Read when the Divine Liturgy cannot be attended',
     body:[].concat(TRISAGION, [
-      H('Psalm 102'),
-      V('Bless the Lord, O my soul, and all that is within me bless His holy name. Bless the Lord, O my soul, and forget not all that He hath done for thee: Who is gracious unto all thine iniquities, Who healeth all thine infirmities; Who redeemeth thy life from corruption, Who crowneth thee with mercy and compassion.'),
-      V('Compassionate and merciful is the Lord, long-suffering and plenteous in mercy. Not according to our iniquities hath He dealt with us, neither according to our sins hath He rewarded us. For according to the height of heaven from the earth, so hath the Lord made His mercy to prevail over them that fear Him.'),
-      V('As far as the east is from the west, so far hath He removed our iniquities from us. Like as a father hath compassion upon his sons, so hath the Lord had compassion upon them that fear Him; for He knoweth whereof we are made, He hath remembered that we are dust.'),
+      PS(102),
       P('Glory to the Father, and to the Son, and to the Holy Spirit.'),
-      H('Psalm 145'),
-      V('Praise the Lord, O my soul. I will praise the Lord in my life, I will chant unto my God for as long as I have my being. Trust ye not in princes, in the sons of men, in whom there is no salvation.'),
-      V('Blessed is he of whom the God of Jacob is his help, whose hope is in the Lord his God, Who hath made heaven and the earth, the sea and all that is therein; Who keepeth truth unto eternity, Who executeth judgment for the wronged, Who giveth food unto the hungry. The Lord looseth the fettered; the Lord maketh wise the blind; the Lord setteth aright the fallen; the Lord loveth the righteous.'),
+      PS(145),
       P('Both now and ever, and unto the ages of ages. Amen.'),
       H('The Hymn of Justinian'),
       P('O Only-begotten Son and Word of God, Who art immortal, yet didst deign for our salvation to become incarnate of the holy Theotokos and Ever-Virgin Mary, and without change didst become man, and wast crucified, O Christ God, trampling down death by death; Thou Who art one of the Holy Trinity, glorified together with the Father and the Holy Spirit, save us.'),
