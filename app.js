@@ -11,7 +11,7 @@ var store = {
   set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){ mem[k] = v; } }
 };
 
-var BUILD = 'v15';        // keep in step with CACHE in sw.js
+var BUILD = 'v16';        // keep in step with CACHE in sw.js
 
 var app = document.getElementById('app');
 var tabbar = document.getElementById('tabbar');
@@ -359,7 +359,37 @@ function psalmHTML(n){
        + '<div class="psalm-body">' + body + '</div></details>';
 }
 
+/* "O Heavenly King" is withheld from Pascha until Pentecost. The app has a
+   paschalion, so the substitution is made by season rather than left to a
+   rubric: Christ is risen from Pascha to Ascension, the troparion of the
+   Ascension from Ascension to Pentecost. In Bright Week the Paschal Hours
+   replace these prayers altogether, which the rubric states. */
+function heavenlyKingHTML(){
+  var off = 999;
+  try { off = CAL.today(new Date()).offset; } catch(e){}
+
+  if(off >= 0 && off <= 38){
+    var h = '';
+    if(off <= 7){
+      h += '<div class="rubric">During Bright Week the Paschal Hours are read in place of these prayers.</div>';
+    }
+    h += '<div class="rubric">From Pascha until Ascension, this is said in place of \u201cO Heavenly King\u201d:</div>';
+    h += '<p>Christ is risen from the dead, trampling down death by death, and upon those in the tombs bestowing life.'
+       + '<span class="times">Thrice</span></p>';
+    return h;
+  }
+  if(off >= 39 && off <= 48){
+    return '<div class="rubric">From Ascension until Pentecost, the troparion of the Ascension is said in place of \u201cO Heavenly King\u201d:</div>'
+         + '<p>Thou hast ascended in glory, O Christ our God, having gladdened Thy disciples by the promise of the Holy Spirit, '
+         + 'they being confirmed by the blessing that Thou art the Son of God, the Redeemer of the world.</p>';
+  }
+  return '<p>O Heavenly King, Comforter, Spirit of Truth, Who art everywhere present and fillest all things, '
+       + 'Treasury of good things and Giver of life: come and abide in us, and cleanse us from every impurity, '
+       + 'and save our souls, O Good One.</p>';
+}
+
 function blockHTML(b){
+  if(b.t === 'hk') return heavenlyKingHTML();
   if(b.t === 'ps') return psalmHTML(b.n);
   var c = personalize(b.c);
   if(b.t === 'r') return '<div class="rubric">' + esc(c) + '</div>';
