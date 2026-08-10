@@ -169,8 +169,7 @@ function renderToday(){
      + '<button class="tile" onclick="go(\'rope\')"><span class="t">Prayer Rope</span><span class="d">Count the Jesus Prayer</span></button>'
      + '</div>';
 
-  h += '<div class="foot">Rubrics in red are instructions, not spoken.<br>'
-     + '<button class="footlink" onclick="go(\'about\')">Read how this book is arranged \u2192</button></div>';
+  h += '<div class="foot">Rubrics in red are instructions, not spoken.</div>';
 
   paint(h);
 }
