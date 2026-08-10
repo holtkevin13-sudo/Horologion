@@ -19,8 +19,7 @@ body{
   background:var(--ground); color:var(--ink);
   font-family:var(--display);
   line-height:1.6;
-  padding-env:0;
-  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding:0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
   -webkit-font-smoothing:antialiased;
 }
 .wrap{max-width:44rem;margin:0 auto;padding:0 1.25rem 4rem}
@@ -30,7 +29,7 @@ body{
 }
 
 /* ---------- masthead ---------- */
-.mast{padding:1.75rem 0 .9rem;display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
+.mast{padding:calc(1.75rem + env(safe-area-inset-top)) 0 .9rem;display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
 .mast h1{
   font-size:.92rem;font-family:var(--util);font-weight:600;
   letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:0;
@@ -121,9 +120,17 @@ body{
 
 /* ---------- list view (a category's prayers) ---------- */
 .topbar{
-  position:sticky;top:0;z-index:20;background:var(--ground);
-  padding:.9rem 0 .7rem;border-bottom:1px solid var(--rule);
+  position:sticky;top:0;z-index:20;
+  background:var(--ground);
+  padding:calc(.9rem + env(safe-area-inset-top)) 0 .7rem;
+  border-bottom:1px solid var(--rule);
   display:flex;align-items:center;gap:.8rem;
+}
+/* The bar is inset from the page gutter, so extend its background to the
+   screen edges — otherwise text scrolls visibly past it on either side. */
+.topbar::before{
+  content:"";position:absolute;left:-1.25rem;right:-1.25rem;top:0;bottom:0;
+  background:var(--ground);border-bottom:1px solid var(--rule);z-index:-1;
 }
 .back{
   background:none;border:0;color:var(--gold);cursor:pointer;padding:.25rem .1rem;
@@ -244,7 +251,7 @@ body{padding-bottom:0}
   text-transform:uppercase;color:var(--rubric);
   margin:2.4rem 0 .9rem;
 }
-.pagehead{padding:1.6rem 0 .3rem}
+.pagehead{padding:calc(1.6rem + env(safe-area-inset-top)) 0 .3rem}
 .pagehead h2{font-size:1.5rem;margin:0 0 .3rem;font-weight:400;line-height:1.2}
 .pagehead p{font-family:var(--util);font-size:.7rem;line-height:1.75;color:var(--muted);margin:0}
 
@@ -267,3 +274,61 @@ body{padding-bottom:0}
   display:block;font-family:var(--util);font-size:.64rem;color:var(--muted);
   margin-top:.3rem;line-height:1.5;
 }
+
+/* ============================================================
+   Scroll to top
+   ============================================================ */
+.totop{
+  position:fixed;right:1.1rem;z-index:55;
+  bottom:calc(5.4rem + env(safe-area-inset-bottom));
+  width:2.6rem;height:2.6rem;border-radius:50%;
+  background:var(--ground-2);border:1px solid var(--rule);color:var(--gold);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  opacity:0;pointer-events:none;transition:opacity .2s ease;
+  box-shadow:0 2px 12px rgba(0,0,0,.35);
+}
+.totop.on{opacity:1;pointer-events:auto}
+.totop svg{width:1.05rem;height:1.05rem}
+@media (prefers-reduced-motion:reduce){ .totop{transition:none} }
+
+/* ============================================================
+   Settings
+   ============================================================ */
+.cog{
+  background:none;border:1px solid var(--rule);border-radius:3px;
+  color:var(--ink-dim);cursor:pointer;padding:.42rem .5rem;
+  display:flex;align-items:center;
+}
+.cog:active{color:var(--gold);border-color:var(--gold-dim)}
+.cog svg{width:1.05rem;height:1.05rem;display:block}
+
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.4rem}
+.seg button{
+  background:var(--ground-2);border:1px solid var(--rule);border-radius:3px;
+  color:var(--ink-dim);font-family:var(--util);font-size:.72rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.85rem .5rem;cursor:pointer;
+}
+.seg button[aria-pressed="true"]{color:var(--gold);border-color:var(--gold-dim);background:var(--raise)}
+
+.field{margin:0 0 1.35rem}
+.field label{
+  display:block;font-family:var(--util);font-size:.66rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:.45rem;
+}
+.field input{
+  width:100%;background:var(--ground-2);border:1px solid var(--rule);border-radius:3px;
+  color:var(--ink);font-family:var(--display);font-size:1.02rem;
+  padding:.75rem .8rem;
+}
+.field input:focus{outline:none;border-color:var(--gold-dim)}
+.field input::placeholder{color:var(--muted);font-style:italic}
+.field .hint{
+  font-family:var(--util);font-size:.66rem;line-height:1.7;color:var(--muted);margin-top:.4rem;
+}
+.setlink{
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+  background:none;border:0;border-bottom:1px solid var(--rule);
+  padding:1rem .1rem;color:var(--ink);font-family:var(--display);font-size:1.02rem;
+  text-align:left;cursor:pointer;
+}
+.setlink .rc-go{color:var(--gold)}
