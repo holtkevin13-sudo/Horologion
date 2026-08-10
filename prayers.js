@@ -487,13 +487,15 @@ recenter: [
 
   { id:'r-ephraim', title:'Turn Me From What Torments Me', by:'The Prayer of St. Ephraim the Syrian',
     body:[
-      R('Prayed with prostrations in Lent; said standing at other times. It names the very things that torment, and asks for their opposites.'),
-      P('O Lord and Master of my life, give me not a spirit of sloth, despondency, love of power, and idle talk.'),
-      R('Bow low.'),
+      R('Prayed with prostrations in Great Lent, and said standing at other times. It names the very things that torment, and asks for their opposites.'),
+      P('O Lord and Master of my life, give me not a spirit of sloth, despondency, lust of power, and idle talk.'),
+      R('A prostration.'),
       P('But grant unto me, Thy servant, a spirit of chastity, humility, patience and love.'),
-      R('Bow low.'),
+      R('A prostration.'),
       P('Yea, O Lord and King, grant me to see mine own transgressions and not to judge my brother; for blessed art Thou unto the ages of ages. Amen.'),
-      R('Bow low.'),
+      R('A prostration. Then twelve bows from the waist, signing yourself with the Cross at each, saying:'),
+      P('O God, cleanse me a sinner.', 'Twelve times'),
+      R('Then the whole prayer is said once more, without pausing, followed by a single prostration at the end.'),
       H('Against the thought that will not leave'),
       P('O Lord, deliver me from all ignorance and forgetfulness, from despondency and stony insensibility. O Lord, enlighten my heart which evil desire hath darkened. O Lord, shelter me from certain men, and demons, and passions, and from every other unseemly thing.'),
       P('O most holy Lady Theotokos, by thy holy and all-powerful prayers banish from me, thy lowly servant, despondency, forgetfulness, folly, negligence, and all impure, evil and blasphemous thoughts from my heart and darkened mind. Quench the flame of my passions, for I am poor and wretched.'),
@@ -528,7 +530,7 @@ recenter: [
     body:[
       P('O Lord, grant that I may meet all that this coming day brings to me with spiritual tranquility. Grant that I may fully surrender myself to Thy holy will.'),
       P('At every hour of this day, direct and support me in all things. Whatsoever news may reach me in the course of the day, teach me to accept it with a calm soul and the firm conviction that all is subject to Thy holy will.'),
-      P('Direct my thoughts and feelings in all my words and deeds. In all unexpected occurrences, do not let me forget that all is sent down from Thee.'),
+      P('Direct my thoughts and feelings in all my words and actions. In all unexpected occurrences, do not let me forget that all is sent down from Thee.'),
       P('Grant that I may deal straightforwardly and wisely with every member of my family, neither embarrassing nor saddening anyone.'),
       P('O Lord, grant me the strength to endure the fatigue of the coming day and all the events that take place during it. Direct my will and teach me to pray, to believe, to hope, to be patient, to forgive, and to love. Amen.')
     ] }
