@@ -12,13 +12,31 @@ function V(t){ return {t:'v', c:t}; }            // psalm verse / antiphon
 function H(t){ return {t:'h', c:t}; }            // sub-heading
 function PS(n){ return {t:'ps', n:n, c:''}; }    // a psalm, resolved at render
 function HK(){ return {t:'hk', c:''}; }          // 'O Heavenly King', seasonal
+function PSV(n, a, b){ return {t:'psv', n:n, a:a, b:b, c:''}; }  // selected verses
+
+/* The three states of the seasonal invocation. Held here as data so that both
+   the app and the review export read the same strings. */
+var SEASONAL_HK = {
+  paschal: [
+    R('From Pascha until Ascension, this is said in place of \u201cO Heavenly King\u201d:'),
+    P('Christ is risen from the dead, trampling down death by death, and upon those in the tombs bestowing life.', 'Thrice')
+  ],
+  brightWeek: R('During Bright Week these prayers give way to the Paschal Hours, which are served in church and are not in this book.'),
+  ascension: [
+    R('From Ascension until Pentecost, the troparion of the Ascension is said in place of \u201cO Heavenly King\u201d:'),
+    P('Thou hast ascended in glory, O Christ our God, having gladdened Thy disciples by the promise of the Holy Spirit, they being confirmed by the blessing that Thou art the Son of God, the Redeemer of the world.')
+  ],
+  ordinary: [
+    P('O Heavenly King, Comforter, Spirit of Truth, Who art everywhere present and fillest all things, Treasury of good things and Giver of life: come and abide in us, and cleanse us from every impurity, and save our souls, O Good One.')
+  ]
+};
 
 /* ---- shared building blocks ---- */
 var BEGINNING = [
   R('Rising from sleep, before any other thing, stand reverently and make the sign of the Cross, saying:'),
   P('In the name of the Father, and of the Son, and of the Holy Spirit. Amen.'),
   R('Then pause a little, until all your senses are stilled and your thoughts forsake all things earthly. Then say:'),
-  P('O Lord, cleanse me a sinner, for I have never done anything good in Thy sight; but deliver me from the evil one, and let Thy will be done in me, that I may open mine unworthy mouth without condemnation and praise Thy holy name: of the Father, and of the Son, and of the Holy Spirit, now and ever, and unto the ages of ages. Amen.'),
+  P('O God, cleanse me a sinner, for I have never done anything good in Thy sight; but deliver me from the evil one, and let Thy will be done in me, that I may open mine unworthy mouth without condemnation and praise Thy holy name: of the Father, and of the Son, and of the Holy Spirit, now and ever, and unto the ages of ages. Amen.'),
   P('Glory to Thee, our God, glory to Thee.')
 ];
 
@@ -52,7 +70,12 @@ var MORNING_TROPARIA = [
   P('From bed and sleep hast Thou raised me up, O Lord; enlighten my mind and heart, and open my lips that I may hymn Thee, O Holy Trinity: Holy, Holy, Holy art Thou, O God; through the Theotokos, have mercy on us.'),
   P('Both now and ever, and unto the ages of ages. Amen.'),
   P('Suddenly the Judge shall come, and the deeds of each shall be laid bare; but with fear do we cry at midnight: Holy, Holy, Holy art Thou, O God; through the Theotokos, have mercy on us.'),
-  P('Lord, have mercy.', 'Twelve times')
+  P('Lord, have mercy.', 'Twelve times'),
+  H('Prayer to the Most Holy Trinity'),
+  R('Printed in some books as the Prayer of St. Basil the Great to the Most Holy Trinity, and in others without attribution.'),
+  P('Arising from sleep I thank Thee, O Holy Trinity, for that through Thy great goodness and long-suffering Thou hast not been wroth with me, slothful and sinful as I am, neither hast Thou destroyed me in mine iniquities; but hast shown Thy wonted love for mankind, and hast raised me up as I lay in heedlessness, that I might rise early and glorify Thy might.'),
+  P('And now enlighten the eyes of my understanding; open my mouth to receive Thy words, and teach me Thy commandments; and help me to do Thy will, confessing Thee from my heart and singing praise unto Thine all-holy name: of the Father, and of the Son, and of the Holy Spirit, now and ever, and unto the ages of ages. Amen.'),
+  P('O come, let us worship God our King. O come, let us worship and fall down before Christ our King and God. O come, let us worship and fall down before Christ Himself, our King and our God.')
 ];
 
 var THOU_WHO_AT_ALL_TIMES = P('O Thou Who at all times and at every hour, both in heaven and on earth, art worshipped and glorified, O Christ God, long-suffering, plenteous in mercy and compassion, Who lovest the righteous and hast mercy on sinners, Who callest all to salvation through the promise of good things to come: do Thou Thyself, O Lord, receive our prayers at this hour, and guide our life toward Thy commandments. Sanctify our souls, make chaste our bodies, correct our thoughts, purify our intentions, and deliver us from every sorrow, evil and distress. Compass us about with Thy holy angels, that guarded and guided by their host we may attain to the unity of the faith and to the knowledge of Thine unapproachable glory; for blessed art Thou unto the ages of ages. Amen.');
@@ -96,7 +119,6 @@ midnight: [
 morning: [
   { id:'m-open', title:'The Beginning', by:'Rising from sleep',
     body: [].concat(BEGINNING, TRISAGION, MORNING_TROPARIA, [
-      P('O come, let us worship God our King. O come, let us worship and fall down before Christ our King and God. O come, let us worship and fall down before Christ Himself, our King and our God.'),
       PS(50),
       H('The Symbol of Faith'),
       P('I believe in one God, the Father Almighty, Maker of heaven and earth, and of all things visible and invisible. And in one Lord Jesus Christ, the Son of God, the Only-begotten, begotten of the Father before all ages; Light of Light, true God of true God; begotten, not made; of one essence with the Father, by Whom all things were made; Who for us men and for our salvation came down from the heavens, and was incarnate of the Holy Spirit and the Virgin Mary, and became man; and was crucified for us under Pontius Pilate, and suffered, and was buried; and arose again on the third day according to the Scriptures; and ascended into the heavens, and sitteth at the right hand of the Father; and shall come again with glory to judge the living and the dead, Whose kingdom shall have no end.'),
@@ -106,10 +128,9 @@ morning: [
   { id:'m-publican', title:'The Prayer of the Publican', by:'Luke 18:13',
     body:[ R('Bow low and say:'), P('O God, be merciful to me a sinner.') ] },
 
-  { id:'m-mac2', title:'Arising from Sleep', by:'Second morning prayer of St. Macarius the Great',
+  { id:'m-mac2', title:'Having Risen from Sleep', by:'Second morning prayer of St. Macarius the Great',
     body:[
-      P('Arising from sleep I thank Thee, O Holy Trinity, for that through Thy great goodness and long-suffering Thou hast not been wroth with me, slothful and sinful as I am, neither hast Thou destroyed me in mine iniquities; but hast shown Thy wonted love for mankind, and hast raised me up as I lay in heedlessness, that I might rise early and glorify Thy might.'),
-      P('And now enlighten the eyes of my understanding; open my mouth to receive Thy words, and teach me Thy commandments; and help me to do Thy will, confessing Thee from my heart and singing praise unto Thine all-holy name: of the Father, and of the Son, and of the Holy Spirit, now and ever, and unto the ages of ages. Amen.')
+      P('Having risen from sleep, I offer unto Thee, O Saviour, the midnight hymn, and falling down I cry unto Thee: Grant me not to fall asleep in the death of sin, but have compassion on me, O Thou Who wast voluntarily crucified, and hasten to raise me who am reclining in idleness, and save me in prayer and intercession; and after the night\u2019s sleep shine upon me a sinless day, O Christ God, and save me.')
     ] },
 
   { id:'m-mac3', title:'To Thee, O Master', by:'Third morning prayer of St. Macarius the Great',
@@ -489,9 +510,9 @@ recenter: [
   { id:'r-strength', title:'For Strength and Courage', by:'When you are afraid, or too tired to go on',
     body:[
       H('From the Psalms'),
-      V('The Lord is my light and my saviour; whom then shall I fear? The Lord is the defender of my life; of whom then shall I be afraid? Though a host should array itself against me, my heart shall not be afraid; though war should rise up against me, in this have I hoped.'),
-      V('He that dwelleth in the help of the Most High shall abide in the shelter of the God of heaven. He shall say unto the Lord: Thou art my helper and my refuge; He is my God, and I will hope in Him. With His shoulders will He overshadow thee, and under His wings shalt thou have hope; His truth shall encompass thee as a shield.'),
-      V('God is our refuge and strength, a helper in the afflictions that mightily befall us. Therefore will we not fear when the earth be shaken.'),
+      PSV(26, 1, 3),
+      PSV(90, 1, 4),
+      PSV(45, 1, 2),
       H('Prayer'),
       R('The prayer below is a supplication composed in the customary manner.'),
       P('O Lord Jesus Christ my God, Thou didst sweat blood in the garden and didst not turn back; Thou knowest what it is to be pressed beyond bearing. Look upon me now, for my strength is spent and my courage has failed.'),
@@ -501,7 +522,7 @@ recenter: [
 
   { id:'r-light', title:'Come, O True Light', by:'St. Symeon the New Theologian \u2014 invocation of the Holy Spirit',
     body:[
-      P('O Heavenly King, Comforter, Spirit of Truth, Who art everywhere present and fillest all things, Treasury of good things and Giver of life: come and abide in us, and cleanse us from every impurity, and save our souls, O Good One.'),
+      HK(),
       H('The Invocation'),
       R('Say this slowly. It is meant to be waited through, not read.'),
       P('Come, O true Light. Come, O eternal Life. Come, O hidden Mystery. Come, O nameless Treasure. Come, O ineffable Reality. Come, O inconceivable Person.'),
@@ -530,17 +551,8 @@ recenter: [
 
   { id:'r-ps50', title:'Psalm 50', by:'The psalm of repentance \u2014 prayed daily throughout the Church',
     body:[
-      R('No psalm is read more often in Orthodox worship than this one. It is in the Midnight Office, in Matins, in the Third Hour, in the prayers before confession. When you do not know what to pray, pray this.'),
-      P('Have mercy on me, O God, according to Thy great mercy; and according to the multitude of Thy compassions blot out my transgression. Wash me thoroughly from mine iniquity, and cleanse me from my sin.'),
-      P('For I know mine iniquity, and my sin is ever before me. Against Thee only have I sinned and done this evil before Thee, that Thou mightest be justified in Thy words, and prevail when Thou art judged.'),
-      P('For behold, I was conceived in iniquities, and in sins did my mother bear me. For behold, Thou hast loved truth; the hidden and secret things of Thy wisdom hast Thou made manifest unto me.'),
-      P('Thou shalt sprinkle me with hyssop, and I shall be made clean; Thou shalt wash me, and I shall be made whiter than snow. Thou shalt make me to hear joy and gladness; the bones that be humbled, they shall rejoice.'),
-      P('Turn Thy face away from my sins, and blot out all mine iniquities. Create in me a clean heart, O God, and renew a right spirit within me.'),
-      P('Cast me not away from Thy presence, and take not Thy Holy Spirit from me. Restore unto me the joy of Thy salvation, and with Thy governing Spirit establish me.'),
-      P('I shall teach transgressors Thy ways, and the ungodly shall turn back unto Thee. Deliver me from blood-guiltiness, O God, Thou God of my salvation; my tongue shall rejoice in Thy righteousness.'),
-      P('O Lord, Thou shalt open my lips, and my mouth shall declare Thy praise. For if Thou hadst desired sacrifice, I had given it; with whole-burnt offerings Thou shalt not be pleased.'),
-      P('A sacrifice unto God is a broken spirit; a heart that is broken and humbled God will not despise.'),
-      P('Do good, O Lord, in Thy good pleasure unto Sion, and let the walls of Jerusalem be builded. Then shalt Thou be pleased with a sacrifice of righteousness, with oblation and whole-burnt offerings. Then shall they offer bullocks upon Thine altar.'),
+      R('No psalm is read more often in Orthodox worship than this one. It is in the Midnight Office, in Matins, in the Third Hour, in the morning rule, and in the prayers before confession. When you do not know what to pray, pray this.'),
+      PS(50),
       R('The psalm does not end in despair. It ends with the walls being rebuilt.')
     ] },
 
@@ -732,7 +744,7 @@ PRAYERS.about = [
       P('Vespers, Matins and the Divine Liturgy are shown on the home screen but cannot be read here. Their texts change every day, drawing on the Octoechos, the Menaion, the Triodion and the Pentecostarion, and they are served in church rather than kept privately.'),
       H('The Hours in practice'),
       P('The Hours were appointed for the first, third, sixth and ninth hours counted from dawn \u2014 roughly six and nine in the morning, noon, and three in the afternoon. Monasteries still keep them at these times. In parish practice they are ordinarily joined to other services: the First Hour to the end of Matins, the Third and Sixth read together before the Liturgy, and the Ninth before Vespers.'),
-      P('The psalms appointed are fixed. The First Hour reads Psalms 5, 89 and 100; the Third, Psalms 16, 24 and 50; the Sixth, Psalms 53, 54 and 90; the Ninth, Psalms 83, 84 and 85. The numbering is that of the Septuagint, which the Orthodox Church uses and which runs one behind the Hebrew numbering from Psalm 9 onward. The Hours here are given in the reader\u2019s abbreviated form, with representative verses standing in for the full psalms; the full text is found in the Psalter.'),
+      P('The psalms appointed are fixed. The First Hour reads Psalms 5, 89 and 100; the Third, Psalms 16, 24 and 50; the Sixth, Psalms 53, 54 and 90; the Ninth, Psalms 83, 84 and 85. The numbering is that of the Septuagint, which the Orthodox Church uses and which runs one behind the Hebrew numbering from Psalm 9 onward. The Hours here are given in the reader\u2019s abbreviated form: the appointed psalms are printed in full, but the second Trisagion and the kontakion of the day are omitted.'),
       H('The rule and the cycle are not the same thing'),
       P('The Morning and Evening Prayers are not services of the daily cycle. They are the rule of prayer kept at home by a layman, received from the prayer book, and they stand apart from the Hours for that reason. Neither replaces the other, and neither is a substitute for the services of the Church.'),
       P('The measure of a rule is not its length but its constancy, and it is set with the blessing of one\u2019s spiritual father, who knows what a given soul can bear.'),
