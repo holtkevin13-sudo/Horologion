@@ -11,7 +11,7 @@ var store = {
   set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){ mem[k] = v; } }
 };
 
-var BUILD = 'v12';        // keep in step with CACHE in sw.js
+var BUILD = 'v14';        // keep in step with CACHE in sw.js
 
 var app = document.getElementById('app');
 var tabbar = document.getElementById('tabbar');
@@ -33,7 +33,7 @@ function personalize(t){
   t = t.replace(/\(Priest\)/g,   (store.get('priest','').trim()   || 'my spiritual father'));
   t = t.replace(/\(Bishop\)/g,   (store.get('bishop','').trim()   || 'our bishop'));
   var sp = store.get('sponsor','').trim();
-  t = t.replace(/\(Sponsor\)/g, sp ? sp + ', my sponsor at holy baptism' : 'my godparents');
+  t = t.replace(/\(Sponsor\)/g, sp ? sp + ', my godparent' : 'my godparents');
   t = t.replace(/\(Intentions\)/g,(store.get('intentions','').trim() || 'what I now hold silently before Thee'));
   return t;
 }
@@ -456,7 +456,7 @@ function renderSettings(){
   h += field('bishop', 'Bishop', 'His Eminence Metropolitan N.',
              'The hierarch your parish commemorates. Left blank, the prayer reads simply "our bishop".');
   h += field('sponsor', 'Godparent or sponsor', 'The name of your sponsor',
-             'Your sponsor at baptism or chrismation, commemorated among the living.');
+             'The one who sponsored you at your reception into the Church, whether by baptism or by chrismation. Commemorated among the living.');
   h += field('living', 'The living', 'Names, separated by commas',
              'Read in the prayer for the living.');
   h += field('departed', 'The departed', 'Names, separated by commas',
