@@ -11,7 +11,7 @@ var store = {
   set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){ mem[k] = v; } }
 };
 
-var BUILD = 'v11';        // keep in step with CACHE in sw.js
+var BUILD = 'v12';        // keep in step with CACHE in sw.js
 
 var app = document.getElementById('app');
 var tabbar = document.getElementById('tabbar');
@@ -77,6 +77,7 @@ function tabOf(v){
   if(v.name === 'today' || v.name === 'rope' || v.name === 'about'
      || v.name === 'readings' || v.name === 'settings') return 'today';
   if(v.name === 'rule' || v.name === 'hours' || v.name === 'recenter') return v.name;
+  if(v.name === 'psalter' || v.name === 'psalm') return 'hours';
   var c = v.cat;
   if(c === 'recenter') return 'recenter';
   if(RULE_CATS.indexOf(c) > -1) return 'rule';
@@ -292,6 +293,8 @@ function renderHours(){
     g.rows.forEach(function(o){ h += hourRow(o); });
     h += '</div><p class="groupnote">' + esc(g.note) + '</p>';
   });
+  h += '<div class="sectionhead">The Psalter</div>';
+  h += '<button class="setlink" onclick="go(\'psalter\')">All 150 psalms, by kathisma<span class="rc-go">\u2192</span></button>';
   h += '<div class="foot"><button class="footlink" onclick="go(\'about\')">Read how this book is arranged \u2192</button></div>';
   paint(h);
 }
@@ -492,6 +495,52 @@ function setTheme(t){
   render();
 }
 
+/* ---- the Psalter ---- */
+function renderPsalter(){
+  var h = topbar('The Psalter', 'tab(\'hours\')');
+  h += '<div class="reader" style="padding-top:1.3rem">';
+  h += '<div class="eyebrow kicker">150 psalms, with Psalm 151</div>';
+  h += '<h2>The Psalter</h2>';
+  h += '<div class="by">Septuagint numbering \u2014 one behind the Hebrew from Psalm 9</div>';
+  h += '<div class="rubric">The Psalter is divided into twenty kathismata. One kathisma is '
+     + 'appointed for each day, and in Great Lent two, so that the whole Psalter is read '
+     + 'through in a week. Choose a kathisma, or any psalm within it.</div>';
+  for(var i = 0; i < KATHISMATA.length; i++){
+    var k = KATHISMATA[i];
+    h += '<details class="psalm"><summary>'
+       + '<span class="ps-n">Kathisma ' + k.n + '</span>'
+       + '<span class="ps-c">Psalms ' + k.from + (k.to > k.from ? '\u2013' + k.to : '') + '</span>'
+       + '</summary><div class="psalm-body kath">';
+    for(var n = k.from; n <= k.to; n++){
+      if(!PSALMS[n]) continue;
+      h += '<button class="kath-p" onclick="go(\'psalm-' + n + '\')">'
+         + '<span>Psalm ' + n + '</span>'
+         + '<span class="ps-c">' + PSALMS[n].length + ' vv</span></button>';
+    }
+    h += '</div></details>';
+  }
+  h += '</div>';
+  paint(h);
+}
+
+function renderPsalm(n){
+  var h = topbar('Psalm ' + n, 'go(\'psalter\')');
+  h += '<div class="reader">';
+  var k = kathismaOf(n);
+  h += '<div class="eyebrow kicker">' + (k ? 'Kathisma ' + k : '') + '</div>';
+  h += '<h2>Psalm ' + n + '</h2>';
+  h += '<div class="by">' + PSALMS[n].length + ' verses</div>';
+  for(var i = 0; i < PSALMS[n].length; i++){
+    h += '<p class="pv"><span class="pvn">' + (i + 1) + '</span>' + esc(PSALMS[n][i]) + '</p>';
+  }
+  h += '<div class="endmark">' + CROSS() + '</div>';
+  h += '<div class="pager">'
+     + '<button ' + (!PSALMS[n-1] ? 'disabled' : 'onclick="go(\'psalm-' + (n-1) + '\')"') + '>\u2190 Psalm ' + (n-1) + '</button>'
+     + '<button ' + (!PSALMS[n+1] ? 'disabled' : 'onclick="go(\'psalm-' + (n+1) + '\')"') + '>Psalm ' + (n+1) + ' \u2192</button>'
+     + '</div></div>';
+  paint(h);
+}
+
 /* ---- backup ---- */
 var BACKUP_KEYS = ['patron','sponsor','priest','bishop','living','departed','intentions','theme','ropegoal'];
 function backupText(){
@@ -612,7 +661,9 @@ function go(k, from){
   /* Pages reachable from Settings remember it, so Back returns to Settings
      rather than dropping the reader on the Today screen. */
   if(!from && view.name === 'settings') from = 'settings';
-  if(k === 'rope' || k === 'readings' || k === 'settings'){ view = {name:k}; }
+  if(k === 'psalter'){ view = {name:'psalter'}; }
+  else if(k.indexOf('psalm-') === 0){ view = {name:'psalm', n:parseInt(k.slice(6), 10)}; }
+  else if(k === 'rope' || k === 'readings' || k === 'settings'){ view = {name:k}; }
   else if(k === 'today' || k === 'rule' || k === 'hours'){ view = {name:k}; }
   else { view = {name:'list', cat:k, from:from}; }
   push(); render();
@@ -659,6 +710,8 @@ function render(){
   else if(view.name === 'about') renderList('about');
   else if(view.name === 'readings') renderReadings();
   else if(view.name === 'settings') renderSettings();
+  else if(view.name === 'psalter') renderPsalter();
+  else if(view.name === 'psalm') renderPsalm(view.n);
   else if(view.name === 'list') renderList(view.cat);
   else renderReader(view.cat, view.i);
 }
