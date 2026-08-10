@@ -740,3 +740,29 @@ var RULE = [
   {key:'evening', name:'Evening Prayers', time:'Before sleep', sub:'The day laid to rest',   from:19, to:24}
 ];
 
+
+PRAYERS.patron = [
+  { id:'patron-1', title:'To My Patron Saint', by:'The saint whose name you bear',
+    body:[
+      R('The prayers below are in the customary form, with the name you have set in Settings.'),
+      P('Pray unto God for me, O holy saint (Name), for I fervently flee unto thee, the speedy helper and intercessor for my soul.'),
+      H('Prayer'),
+      P('O holy (Name), given me at holy baptism as my guardian and my namesake before God: I am unworthy to bear thy name, for thou didst run the race to its end, while I have scarcely begun; thou didst keep the faith, while I am inconstant in it.'),
+      P('Yet thou dost not despise the one entrusted to thee. Stand for me before the throne of Christ our God. Ask for me the forgiveness of my sins, patience in what I must bear, and the mercy of God at the hour when I shall have nothing else to plead. Teach me by thine own example that the thing which was possible for thee is possible also for me, since it is the same Lord Who worketh in us both.'),
+      P('Through thy prayers, O holy (Name), and through the prayers of the most holy Theotokos, may Christ our God have mercy on me and save me. Amen.'),
+      R('If your parish keeps the feast of your saint, that day is your name day; it is customary to commune, and to be greeted with the words: Many years.')
+    ] },
+  { id:'patron-2', title:'Those I Remember', by:'The living and the departed, by name',
+    body:[
+      R('The names you have entered in Settings are inserted below. They are held on your device alone.'),
+      H('For the Living'),
+      P('O Lord, save and have mercy on Thy servants (Living); and on my spiritual father, my parents, my family and my kinsfolk, my friends and my enemies, on all who have asked my unworthy prayers, and on all Orthodox Christians; and grant them Thine earthly and heavenly good things.'),
+      H('For the Departed'),
+      P('O Lord, remember the souls of Thy departed servants (Departed); and all Orthodox Christians who have fallen asleep in the hope of the resurrection unto life eternal. Forgive them every transgression, voluntary and involuntary, and grant them the Kingdom and the communion of Thine eternal good things, and the enjoyment of Thine endless and blessed life.'),
+      P('Memory eternal.', 'Thrice'),
+      R('The Church prays for the departed on the third, ninth and fortieth days, and on the anniversary of their repose. Their names may also be given to the priest for commemoration at the Liturgy, which is of greater profit to them than anything we can say at home.')
+    ] }
+];
+
+CATS.patron = 'My Patron Saint';
+INTRO.patron = 'Set the names in Settings and they appear in these prayers.';
