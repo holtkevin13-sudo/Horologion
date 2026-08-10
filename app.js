@@ -11,7 +11,7 @@ var store = {
   set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){ mem[k] = v; } }
 };
 
-var BUILD = 'v8';        // keep in step with CACHE in sw.js
+var BUILD = 'v9';        // keep in step with CACHE in sw.js
 
 var app = document.getElementById('app');
 var tabbar = document.getElementById('tabbar');
@@ -32,6 +32,8 @@ function personalize(t){
   t = t.replace(/\(Departed\)/g, d || 'whom I now call to mind');
   t = t.replace(/\(Priest\)/g,   (store.get('priest','').trim()   || 'my spiritual father'));
   t = t.replace(/\(Bishop\)/g,   (store.get('bishop','').trim()   || 'our bishop'));
+  var sp = store.get('sponsor','').trim();
+  t = t.replace(/\(Sponsor\)/g, sp ? sp + ', my sponsor at holy baptism' : 'my godparents');
   t = t.replace(/\(Intentions\)/g,(store.get('intentions','').trim() || 'what I now hold silently before Thee'));
   return t;
 }
@@ -261,9 +263,12 @@ function renderList(cat, isRoot){
   var items = PRAYERS[cat] || [];
   if(items.length === 1){ return renderReader(cat, 0); }
   /* A tab's own root page needs no back button — the tab bar is the way out. */
+  var origin = view.from === 'settings'
+    ? 'go(\'settings\')'
+    : 'tab(\'' + tabOf({name:'list', cat:cat}) + '\')';
   var h = isRoot
     ? '<div class="pagehead"><h2>' + esc(CATS[cat]) + '</h2></div>'
-    : topbar(CATS[cat], 'tab(\'' + tabOf({name:'list', cat:cat}) + '\')');
+    : topbar(CATS[cat], origin);
   if(INTRO[cat]) h += '<p class="intro">' + esc(INTRO[cat]) + '</p>';
   h += '<ul class="idx">';
   items.forEach(function(p, i){
@@ -291,9 +296,10 @@ function blockHTML(b){
 }
 function renderReader(cat, i){
   var items = PRAYERS[cat], p = items[i], many = items.length > 1;
-  var back = many
-    ? (cat === 'recenter' ? 'tab(\'recenter\')' : 'go(\'' + cat + '\')')
-    : 'tab(\'' + tabOf({name:'read', cat:cat}) + '\')';
+  var back;
+  if(many) back = (cat === 'recenter') ? 'tab(\'recenter\')' : 'go(\'' + cat + '\')';
+  else if(view.from === 'settings') back = 'go(\'settings\')';
+  else back = 'tab(\'' + tabOf({name:'read', cat:cat}) + '\')';
   var h = topbar(CATS[cat], back);
   h += '<div class="reader">';
   if(many) h += '<div class="eyebrow kicker">' + (i + 1) + ' of ' + items.length + '</div>';
@@ -376,6 +382,8 @@ function renderSettings(){
              'Your parish priest or spiritual father.');
   h += field('bishop', 'Bishop', 'His Eminence Metropolitan N.',
              'The hierarch your parish commemorates. Left blank, the prayer reads simply "our bishop".');
+  h += field('sponsor', 'Godparent or sponsor', 'The name of your sponsor',
+             'Your sponsor at baptism or chrismation, commemorated among the living.');
   h += field('living', 'The living', 'Names, separated by commas',
              'Read in the prayer for the living.');
   h += field('departed', 'The departed', 'Names, separated by commas',
@@ -475,16 +483,20 @@ function tab(id){
   view = {name:id};
   push(); render();
 }
-function go(k){
+function go(k, from){
   if(view.name === 'list') listScroll[view.cat] = window.scrollY;
+  /* Pages reachable from Settings remember it, so Back returns to Settings
+     rather than dropping the reader on the Today screen. */
+  if(!from && view.name === 'settings') from = 'settings';
   if(k === 'rope' || k === 'readings' || k === 'settings'){ view = {name:k}; }
   else if(k === 'today' || k === 'rule' || k === 'hours'){ view = {name:k}; }
-  else { view = {name:'list', cat:k}; }
+  else { view = {name:'list', cat:k, from:from}; }
   push(); render();
 }
 function open_(cat, i){
+  var from = (view.name === 'list' || view.name === 'read') ? view.from : undefined;
   if(view.name === 'list') listScroll[cat] = window.scrollY;
-  view = {name:'read', cat:cat, i:i};
+  view = {name:'read', cat:cat, i:i, from:from};
   push(); render();
 }
 function push(){
