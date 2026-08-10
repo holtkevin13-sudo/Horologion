@@ -1,7 +1,7 @@
 {
-  "name": "Horologion — Orthodox Daily Prayers",
-  "short_name": "Horologion",
-  "description": "A pocket book of hours: morning and evening prayers, the Hours, and prayers to the Theotokos, the guardian angel and St. Silouan.",
+  "name": "Prayer Book — Orthodox Daily Prayers",
+  "short_name": "Prayers",
+  "description": "An Orthodox prayer book: morning and evening prayers, the Hours, Holy Communion, the commemoration, and prayers for hard days.",
   "lang": "en",
   "dir": "ltr",
   "start_url": "./",
