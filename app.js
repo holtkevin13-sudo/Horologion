@@ -17,6 +17,20 @@ var view = {name:'today'};
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+/* Names the reader has set in Settings, substituted into the prayer texts.
+   Escaping happens after substitution, so a name is never treated as markup. */
+function personalize(t){
+  t = String(t);
+  if(t.indexOf('(') === -1) return t;
+  var p = patronName();
+  var l = store.get('living', '').trim();
+  var d = store.get('departed', '').trim();
+  if(p) t = t.replace(/\(Name\)/g, p);
+  t = t.replace(/\(Living\)/g,   l || 'whom I now call to mind');
+  t = t.replace(/\(Departed\)/g, d || 'whom I now call to mind');
+  return t;
+}
+
 /* The three-bar cross: titulus, crossbeam, and the footrest raised
    toward the thief at the Lord's right hand. */
 function CROSS(){
@@ -31,6 +45,12 @@ var ICONS = {
   hours:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M12 7v5.2l3.4 2"/></svg>',
   recenter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M12 20.4S4.2 15.6 4.2 10.1A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7.8 2.1c0 5.5-7.8 10.3-7.8 10.3z"/></svg>'
 };
+
+var COG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">'
+  + '<circle cx="12" cy="12" r="3.1"/>'
+  + '<path d="M19.4 14.4a1.6 1.6 0 0 0 .32 1.77l.06.06a1.9 1.9 0 1 1-2.7 2.7l-.05-.06a1.6 1.6 0 0 0-1.78-.32 1.6 1.6 0 0 0-.97 1.47v.17a1.9 1.9 0 1 1-3.8 0v-.09a1.6 1.6 0 0 0-1.05-1.47 1.6 1.6 0 0 0-1.77.32l-.06.06a1.9 1.9 0 1 1-2.7-2.7l.06-.06a1.6 1.6 0 0 0 .32-1.77 1.6 1.6 0 0 0-1.47-.98h-.17a1.9 1.9 0 1 1 0-3.8h.09a1.6 1.6 0 0 0 1.47-1.05 1.6 1.6 0 0 0-.32-1.77l-.06-.06a1.9 1.9 0 1 1 2.7-2.7l.06.06a1.6 1.6 0 0 0 1.77.32h.08A1.6 1.6 0 0 0 10.5 3.6v-.17a1.9 1.9 0 1 1 3.8 0v.09a1.6 1.6 0 0 0 .97 1.47 1.6 1.6 0 0 0 1.78-.32l.05-.06a1.9 1.9 0 1 1 2.7 2.7l-.06.06a1.6 1.6 0 0 0-.32 1.77v.08a1.6 1.6 0 0 0 1.47.97h.17a1.9 1.9 0 1 1 0 3.8h-.09a1.6 1.6 0 0 0-1.47.97z"/></svg>';
+
+var ARROW_UP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
 
 var TABS = [
   {id:'today',    label:'Today'},
@@ -47,7 +67,8 @@ function renderTabs(){
   }).join('');
 }
 function tabOf(v){
-  if(v.name === 'today' || v.name === 'rope' || v.name === 'about' || v.name === 'readings') return 'today';
+  if(v.name === 'today' || v.name === 'rope' || v.name === 'about'
+     || v.name === 'readings' || v.name === 'settings') return 'today';
   if(v.name === 'rule' || v.name === 'hours' || v.name === 'recenter') return v.name;
   var c = v.cat;
   if(c === 'recenter') return 'recenter';
@@ -122,8 +143,7 @@ function renderReadings(){
 function renderToday(){
   var w = WORD[dayIndex() % WORD.length];
   var h = '<div class="mast"><div><h1><span class="cross">' + CROSS() + '</span>Horologion</h1></div>'
-        + '<button class="themebtn" onclick="toggleTheme()">'
-        + (document.documentElement.getAttribute('data-theme') === 'paper' ? 'Vigil' : 'Paper') + '</button></div>';
+        + '<button class="cog" onclick="go(\'settings\')" aria-label="Settings">' + COG + '</button></div>';
 
   h += feastCard();
 
@@ -146,7 +166,7 @@ function renderToday(){
      + tile('theotokos','To the Theotokos','Six prayers to the Mother of God')
      + tile('angel','To My Guardian Angel','Morning, evening, troparion')
      + tile('silouan','To St. Silouan','Troparion, supplication, his own words')
-     + tile('occasional','Occasional Prayers','Meals, journeys, beginning a task')
+     + tile('patron', patronLabel(), patronHint())
      + '<button class="tile wide" onclick="go(\'rope\')"><span class="t">Prayer Rope</span><span class="d">Count the Jesus Prayer \u2014 33, 100, or 300 knots</span></button>'
      + '</div>';
 
@@ -154,6 +174,20 @@ function renderToday(){
      + '<button class="footlink" onclick="go(\'about\')">Read how this book is arranged \u2192</button></div>';
 
   paint(h);
+}
+function patronName(){
+  /* Accept "Nicholas", "St. Nicholas" or "Saint Nicholas" alike. */
+  var p = store.get('patron','').trim().replace(/^(st\.?|saint)\s+/i, '');
+  return p ? p.charAt(0).toUpperCase() + p.slice(1) : '';
+}
+function patronLabel(){
+  var p = patronName();
+  return p ? 'To St. ' + p : 'To My Patron Saint';
+}
+function patronHint(){
+  return store.get('patron','').trim()
+    ? 'Your saint, and those you remember'
+    : 'Set your saint in Settings';
 }
 function tile(k, t, d){
   return '<button class="tile" onclick="go(\'' + k + '\')"><span class="t">' + t + '</span><span class="d">' + d + '</span></button>';
@@ -208,10 +242,13 @@ function hourRow(o){
 /* ---- category index ---- */
 var SEQ = {morning:1, evening:1, midnight:1, compline:1, first:1, third:1, sixth:1, ninth:1, typika:1};
 
-function renderList(cat){
+function renderList(cat, isRoot){
   var items = PRAYERS[cat] || [];
   if(items.length === 1){ return renderReader(cat, 0); }
-  var h = topbar(CATS[cat], 'tab(\'' + tabOf({name:'list', cat:cat}) + '\')');
+  /* A tab's own root page needs no back button — the tab bar is the way out. */
+  var h = isRoot
+    ? '<div class="pagehead"><h2>' + esc(CATS[cat]) + '</h2></div>'
+    : topbar(CATS[cat], 'tab(\'' + tabOf({name:'list', cat:cat}) + '\')');
   if(INTRO[cat]) h += '<p class="intro">' + esc(INTRO[cat]) + '</p>';
   h += '<ul class="idx">';
   items.forEach(function(p, i){
@@ -231,14 +268,17 @@ function topbar(title, backAction){
 
 /* ---- reader ---- */
 function blockHTML(b){
-  if(b.t === 'r') return '<div class="rubric">' + esc(b.c) + '</div>';
-  if(b.t === 'v') return '<p class="verse">' + esc(b.c) + '</p>';
-  if(b.t === 'h') return '<div class="sub-h">' + esc(b.c) + '</div>';
-  return '<p>' + esc(b.c) + (b.x ? '<span class="times">' + esc(b.x) + '</span>' : '') + '</p>';
+  var c = personalize(b.c);
+  if(b.t === 'r') return '<div class="rubric">' + esc(c) + '</div>';
+  if(b.t === 'v') return '<p class="verse">' + esc(c) + '</p>';
+  if(b.t === 'h') return '<div class="sub-h">' + esc(c) + '</div>';
+  return '<p>' + esc(c) + (b.x ? '<span class="times">' + esc(b.x) + '</span>' : '') + '</p>';
 }
 function renderReader(cat, i){
   var items = PRAYERS[cat], p = items[i], many = items.length > 1;
-  var back = many ? 'go(\'' + cat + '\')' : 'tab(\'' + tabOf({name:'read', cat:cat}) + '\')';
+  var back = many
+    ? (cat === 'recenter' ? 'tab(\'recenter\')' : 'go(\'' + cat + '\')')
+    : 'tab(\'' + tabOf({name:'read', cat:cat}) + '\')';
   var h = topbar(CATS[cat], back);
   h += '<div class="reader">';
   if(many) h += '<div class="eyebrow kicker">' + (i + 1) + ' of ' + items.length + '</div>';
@@ -282,6 +322,77 @@ function knot(){
 function setGoal(g){ rope.goal = g; store.set('ropegoal', String(g)); renderRope(); }
 function resetRope(){ rope.n = 0; store.set('rope','0'); renderRope(); }
 
+
+/* ---- settings ---- */
+function field(key, label, placeholder, hint){
+  var v = store.get(key, '');
+  return '<div class="field"><label for="f-' + key + '">' + esc(label) + '</label>'
+       + '<input id="f-' + key + '" type="text" value="' + esc(v) + '" '
+       + 'placeholder="' + esc(placeholder) + '" autocapitalize="words" autocomplete="off" '
+       + 'spellcheck="false" oninput="setField(\'' + key + '\', this.value)">'
+       + (hint ? '<div class="hint">' + esc(hint) + '</div>' : '') + '</div>';
+}
+/* Store on input but never re-render — re-rendering would steal focus mid-word. */
+function setField(key, val){ store.set(key, val); }
+
+function renderSettings(){
+  var theme = document.documentElement.getAttribute('data-theme') === 'paper' ? 'paper' : 'vigil';
+  var h = topbar('Settings', 'tab(\'today\')');
+  h += '<div class="reader" style="padding-top:1.4rem">';
+
+  h += '<div class="sectionhead" style="margin-top:0">Appearance</div>';
+  h += '<div class="seg">'
+     + '<button onclick="setTheme(\'vigil\')" aria-pressed="' + (theme === 'vigil') + '">Vigil</button>'
+     + '<button onclick="setTheme(\'paper\')" aria-pressed="' + (theme === 'paper') + '">Paper</button>'
+     + '</div>'
+     + '<div class="hint" style="margin-bottom:.5rem">Vigil is dark, for a room lit by a lampada. Paper is light, for daylight.</div>';
+
+  h += '<div class="sectionhead">Your commemorations</div>';
+  h += field('patron', 'Patron saint', 'Nicholas',
+             'The saint whose name you bear. Entered here, the name appears in the morning prayers and in the prayers to your patron.');
+  h += field('living', 'The living', 'Names, separated by commas',
+             'Read in the prayer for the living.');
+  h += field('departed', 'The departed', 'Names, separated by commas',
+             'Read in the prayer for the departed. Memory eternal.');
+  h += '<div class="hint" style="margin:-.6rem 0 0">These names are kept on this device only. Nothing is sent anywhere, and nothing leaves your phone.</div>';
+
+  h += '<div class="sectionhead">About this book</div>';
+  h += '<button class="setlink" onclick="go(\'about\')">The shape of the day<span class="rc-go">\u2192</span></button>';
+  h += '<button class="setlink" onclick="go(\'patron\')">Prayers to your patron saint<span class="rc-go">\u2192</span></button>';
+
+  h += '<div class="foot">Traditional English in the received order. Rubrics in red are instructions, not spoken.<br>'
+     + 'The calendar computes Pascha offline, so the app works with no connection.</div>';
+  h += '</div>';
+  paint(h);
+}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  store.set('theme', t);
+  var m = document.querySelector('meta[name="theme-color"]');
+  if(m) m.setAttribute('content', t === 'paper' ? '#E8E1D1' : '#12100D');
+  render();
+}
+
+/* ---- scroll to top ---- */
+var toTopEl = null;
+function makeToTop(){
+  if(toTopEl || typeof document.createElement !== 'function') return;
+  toTopEl = document.createElement('button');
+  if(!toTopEl || !toTopEl.setAttribute) { toTopEl = null; return; }
+  toTopEl.className = 'totop';
+  toTopEl.setAttribute('aria-label', 'Back to top');
+  toTopEl.innerHTML = ARROW_UP;
+  toTopEl.onclick = function(){
+    try { window.scrollTo({top:0, behavior:'smooth'}); } catch(e){ window.scrollTo(0,0); }
+  };
+  document.body.appendChild(toTopEl);
+}
+function syncToTop(){
+  if(!toTopEl) return;
+  var deep = window.scrollY > 700;
+  if(deep) toTopEl.classList.add('on'); else toTopEl.classList.remove('on');
+}
+
 /* ---- screen wake lock while praying ---- */
 var lock = null;
 function holdScreen(on){
@@ -308,7 +419,8 @@ function onScroll(){
   var max = document.body.scrollHeight - window.innerHeight;
   bar.style.width = (max > 40 ? Math.min(100, (window.scrollY / max) * 100) : 0) + '%';
 }
-window.addEventListener('scroll', onScroll, {passive:true});
+function onScrollAll(){ onScroll(); syncToTop(); }
+window.addEventListener('scroll', onScrollAll, {passive:true});
 
 /* ---- theme ---- */
 function toggleTheme(){
@@ -327,7 +439,7 @@ function paint(html, scrollTo){
   app.className = 'wrap fade';
   renderTabs();
   window.scrollTo(0, scrollTo || 0);
-  onScroll();
+  onScroll(); syncToTop();
 }
 function tab(id){
   if(view.name === 'list') listScroll[view.cat] = window.scrollY;
@@ -336,7 +448,7 @@ function tab(id){
 }
 function go(k){
   if(view.name === 'list') listScroll[view.cat] = window.scrollY;
-  if(k === 'rope' || k === 'readings'){ view = {name:k}; }
+  if(k === 'rope' || k === 'readings' || k === 'settings'){ view = {name:k}; }
   else if(k === 'today' || k === 'rule' || k === 'hours'){ view = {name:k}; }
   else { view = {name:'list', cat:k}; }
   push(); render();
@@ -359,10 +471,11 @@ function render(){
   if(view.name === 'today') renderToday();
   else if(view.name === 'rule') renderRule();
   else if(view.name === 'hours') renderHours();
-  else if(view.name === 'recenter') renderList('recenter');
+  else if(view.name === 'recenter') renderList('recenter', true);
   else if(view.name === 'rope') renderRope();
   else if(view.name === 'about') renderList('about');
   else if(view.name === 'readings') renderReadings();
+  else if(view.name === 'settings') renderSettings();
   else if(view.name === 'list') renderList(view.cat);
   else renderReader(view.cat, view.i);
 }
@@ -380,6 +493,7 @@ try {
 view = start;
 
 try { history.replaceState({v:view}, '', location.pathname); } catch(e){}
+makeToTop();
 render();
 CAL.ready(function(){ if(view.name === 'today') renderToday(); });
 setInterval(function(){ if(view.name === 'today') renderToday(); }, 60000);
