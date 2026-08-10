@@ -344,3 +344,53 @@ body{overflow-x:hidden}
 }
 .field textarea:focus{outline:none;border-color:var(--gold-dim)}
 .field textarea::placeholder{color:var(--muted);font-style:italic}
+
+/* ============================================================
+   Personalisation prompt
+   ============================================================ */
+.promo{
+  position:relative;background:var(--ground-2);border:1px solid var(--rule);
+  border-left:2px solid var(--gold-dim);border-radius:3px;
+  padding:1rem 2.2rem 1rem .95rem;margin:0 0 1.4rem;
+}
+.promo-x{
+  position:absolute;top:.35rem;right:.4rem;background:none;border:0;
+  color:var(--muted);font-size:1.2rem;line-height:1;cursor:pointer;
+  padding:.35rem .45rem;
+}
+.promo-x:active{color:var(--ink)}
+.promo-t{font-family:var(--display);font-size:1.06rem;line-height:1.25}
+.promo-d{
+  font-family:var(--util);font-size:.7rem;line-height:1.75;color:var(--muted);
+  margin-top:.4rem;
+}
+.promo-go{
+  background:none;border:0;padding:.65rem 0 0;color:var(--gold);cursor:pointer;
+  font-family:var(--util);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+}
+
+/* ============================================================
+   Calendar notices
+   ============================================================ */
+.notice{
+  display:block;width:100%;text-align:left;
+  background:none;border:1px solid var(--rule);border-radius:3px;
+  padding:.7rem .8rem;margin:0 0 1.4rem;color:var(--ink-dim);
+  font-family:var(--util);font-size:.7rem;line-height:1.7;cursor:pointer;
+}
+.notice b{color:var(--gold);font-weight:600}
+div.notice{cursor:default}
+.notice:active{background:var(--ground-2)}
+
+/* ============================================================
+   Continue an interrupted rule
+   ============================================================ */
+.resume{
+  display:flex;align-items:center;justify-content:space-between;width:100%;
+  background:var(--ground-2);border:1px solid var(--gold-dim);border-radius:3px;
+  padding:.85rem .9rem;margin:1.2rem 0 .2rem;
+  color:var(--ink);font-family:var(--util);font-size:.72rem;letter-spacing:.04em;
+  cursor:pointer;
+}
+.resume b{color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.resume:active{background:var(--raise)}
