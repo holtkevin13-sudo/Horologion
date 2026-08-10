@@ -11,7 +11,14 @@ var store = {
   set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){ mem[k] = v; } }
 };
 
-var BUILD = 'v16';        // keep in step with CACHE in sw.js
+var BUILD = 'v21';
+
+/* The paschal cycle, defined once. Pascha is offset 0, so Bright Week runs
+   0-6 and Thomas Sunday is 7; Ascension is the fortieth day (+39) and
+   Pentecost the fiftieth (+49). Both the Today notice and the seasonal
+   invocation read these, so the two can no longer disagree. */
+var PASCHA = { brightEnd: 6, ascension: 39, pentecost: 49 };
+function inBrightWeek(off){ return off >= 0 && off <= PASCHA.brightEnd; }        // keep in step with CACHE in sw.js
 
 var app = document.getElementById('app');
 var tabbar = document.getElementById('tabbar');
@@ -139,7 +146,7 @@ function dayNotices(){
          + '<b>Great Lent.</b> The prayer of St. Ephraim is appointed today, with prostrations.'
          + '</button>';
   }
-  if(f.offset >= 1 && f.offset <= 7){
+  if(inBrightWeek(f.offset)){
     out += '<div class="notice"><b>Bright Week.</b> Christ is risen! The usual beginning is replaced '
          + 'by the paschal hymns, and there is no fasting.</div>';
   }
@@ -367,29 +374,43 @@ function psalmHTML(n){
 function heavenlyKingHTML(){
   var off = 999;
   try { off = CAL.today(new Date()).offset; } catch(e){}
+  var parts = [];
+  if(off >= 0 && off < PASCHA.ascension){
+    if(inBrightWeek(off)) parts.push(SEASONAL_HK.brightWeek);
+    parts = parts.concat(SEASONAL_HK.paschal);
+  } else if(off >= PASCHA.ascension && off < PASCHA.pentecost){
+    parts = SEASONAL_HK.ascension;
+  } else {
+    parts = SEASONAL_HK.ordinary;
+  }
+  return parts.map(plainBlockHTML).join('');
+}
 
-  if(off >= 0 && off <= 38){
-    var h = '';
-    if(off <= 7){
-      h += '<div class="rubric">During Bright Week the Paschal Hours are read in place of these prayers.</div>';
-    }
-    h += '<div class="rubric">From Pascha until Ascension, this is said in place of \u201cO Heavenly King\u201d:</div>';
-    h += '<p>Christ is risen from the dead, trampling down death by death, and upon those in the tombs bestowing life.'
-       + '<span class="times">Thrice</span></p>';
-    return h;
+/* A citation of a few verses, drawn from the same Psalter as the offices so
+   that one psalm never appears in two translations. Falls back to a bare
+   reference rubric if the Psalter is absent. */
+function psalmVersesHTML(n, a, b){
+  var vv = (typeof PSALMS !== 'undefined') ? PSALMS[n] : null;
+  if(!vv) return '<div class="rubric">Psalm ' + n + ':' + a + '\u2013' + b + '</div>';
+  var out = '<div class="rubric">Psalm ' + n + ' \u00b7 ' + a + '\u2013' + b + '</div>';
+  for(var i = a; i <= b && i <= vv.length; i++){
+    out += '<p class="verse">' + esc(vv[i - 1]) + '</p>';
   }
-  if(off >= 39 && off <= 48){
-    return '<div class="rubric">From Ascension until Pentecost, the troparion of the Ascension is said in place of \u201cO Heavenly King\u201d:</div>'
-         + '<p>Thou hast ascended in glory, O Christ our God, having gladdened Thy disciples by the promise of the Holy Spirit, '
-         + 'they being confirmed by the blessing that Thou art the Son of God, the Redeemer of the world.</p>';
-  }
-  return '<p>O Heavenly King, Comforter, Spirit of Truth, Who art everywhere present and fillest all things, '
-       + 'Treasury of good things and Giver of life: come and abide in us, and cleanse us from every impurity, '
-       + 'and save our souls, O Good One.</p>';
+  return out;
+}
+
+/* Renders a block without recursing back into the seasonal dispatch. */
+function plainBlockHTML(b){
+  var c = personalize(b.c);
+  if(b.t === 'r') return '<div class="rubric">' + esc(c) + '</div>';
+  if(b.t === 'v') return '<p class="verse">' + esc(c) + '</p>';
+  if(b.t === 'h') return '<div class="sub-h">' + esc(c) + '</div>';
+  return '<p>' + esc(c) + (b.x ? '<span class="times">' + esc(b.x) + '</span>' : '') + '</p>';
 }
 
 function blockHTML(b){
   if(b.t === 'hk') return heavenlyKingHTML();
+  if(b.t === 'psv') return psalmVersesHTML(b.n, b.a, b.b);
   if(b.t === 'ps') return psalmHTML(b.n);
   var c = personalize(b.c);
   if(b.t === 'r') return '<div class="rubric">' + esc(c) + '</div>';
@@ -532,9 +553,13 @@ function renderPsalter(){
   h += '<div class="eyebrow kicker">150 psalms, with Psalm 151</div>';
   h += '<h2>The Psalter</h2>';
   h += '<div class="by">Septuagint numbering \u2014 one behind the Hebrew from Psalm 9</div>';
-  h += '<div class="rubric">The Psalter is divided into twenty kathismata. One kathisma is '
-     + 'appointed for each day, and in Great Lent two, so that the whole Psalter is read '
-     + 'through in a week. Choose a kathisma, or any psalm within it.</div>';
+  h += '<div class="rubric">' + esc(typeof PSALTER_SOURCE !== 'undefined' ? PSALTER_SOURCE : '')
+     + '</div>';
+  h += '<div class="rubric">The superscriptions \u2014 \u201cA Psalm of David, when he fled from '
+     + 'the presence of his son Absalom\u201d and the like \u2014 are not in this text. Verse numbers '
+     + 'therefore run one or two behind a printed Psalter that counts the title, according to the length of that title: \u201cCreate in me a clean '
+     + 'heart\u201d is 50:10 here and 50:12 in the liturgical Psalter.</div>';
+  h += '<div class="rubric">The Psalter is divided into twenty kathismata. In church it is read through once each week, at Vespers and Matins, about three kathismata a day \u2014 and twice each week in Great Lent. Kept privately, one kathisma a day carries you through the whole Psalter in about three weeks. Choose a kathisma, or any psalm within it.</div>';
   for(var i = 0; i < KATHISMATA.length; i++){
     var k = KATHISMATA[i];
     h += '<details class="psalm"><summary>'
