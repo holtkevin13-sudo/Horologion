@@ -1,7 +1,7 @@
 /* Horologion service worker.
    Bump CACHE whenever you change any file below, or phones will
    keep serving the old copy. That is the one maintenance chore. */
-const CACHE = 'horologion-v3';
+const CACHE = 'horologion-v4';
 
 const ASSETS = [
   './',
