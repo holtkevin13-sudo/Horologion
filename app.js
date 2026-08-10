@@ -11,6 +11,8 @@ var store = {
   set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){ mem[k] = v; } }
 };
 
+var BUILD = 'v8';        // keep in step with CACHE in sw.js
+
 var app = document.getElementById('app');
 var tabbar = document.getElementById('tabbar');
 var view = {name:'today'};
@@ -28,6 +30,9 @@ function personalize(t){
   if(p) t = t.replace(/\(Name\)/g, p);
   t = t.replace(/\(Living\)/g,   l || 'whom I now call to mind');
   t = t.replace(/\(Departed\)/g, d || 'whom I now call to mind');
+  t = t.replace(/\(Priest\)/g,   (store.get('priest','').trim()   || 'my spiritual father'));
+  t = t.replace(/\(Bishop\)/g,   (store.get('bishop','').trim()   || 'our bishop'));
+  t = t.replace(/\(Intentions\)/g,(store.get('intentions','').trim() || 'what I now hold silently before Thee'));
   return t;
 }
 
@@ -77,7 +82,7 @@ function tabOf(v){
   return 'today';
 }
 
-var RULE_CATS = ['morning','evening','occasional','commem'];
+var RULE_CATS = ['morning','evening','occasional','commem','communion'];
 var HOUR_CATS = ['midnight','first','third','sixth','ninth','compline','vespers','matins','typika'];
 
 /* ---- the day ---- */
@@ -140,9 +145,10 @@ function renderReadings(){
 }
 
 /* ---- Today ---- */
-function renderToday(){
+function renderToday(keepScroll){
+  var at = keepScroll ? window.scrollY : 0;
   var w = WORD[dayIndex() % WORD.length];
-  var h = '<div class="mast"><div><h1><span class="cross">' + CROSS() + '</span>Horologion</h1></div>'
+  var h = '<div class="mast"><div><h1><span class="cross">' + CROSS() + '</span>Prayer Book</h1></div>'
         + '<button class="cog" onclick="go(\'settings\')" aria-label="Settings">' + COG + '</button></div>';
 
   h += feastCard();
@@ -169,9 +175,10 @@ function renderToday(){
      + '<button class="tile" onclick="go(\'rope\')"><span class="t">Prayer Rope</span><span class="d">Count the Jesus Prayer</span></button>'
      + '</div>';
 
-  h += '<div class="foot">Rubrics in red are instructions, not spoken.</div>';
+  h += '<div class="foot">Rubrics in red are instructions, not spoken.'
+     + '<span style="float:right;opacity:.6">' + BUILD + '</span></div>';
 
-  paint(h);
+  paint(h, at);
 }
 function patronName(){
   /* Accept "Nicholas", "St. Nicholas" or "Saint Nicholas" alike. */
@@ -214,8 +221,13 @@ function renderRule(){
          + '<span class="l">' + esc(p.title) + '<small>' + esc(p.by) + '</small></span></button></li>';
   }).join('')
   + '<li><button onclick="go(\'commem\')"><span class="n">\u00b7</span>'
-  + '<span class="l">Those I Remember<small>The living and the departed, by name</small></span></button></li>'
+  + '<span class="l">The Commemoration<small>The Church, this land, the living and the departed</small></span></button></li>'
   + '</ul>';
+  h += '<div class="sectionhead">Holy Communion</div>';
+  h += '<ul class="idx">' + PRAYERS.communion.map(function(p, i){
+    return '<li><button onclick="open_(\'communion\',' + i + ')"><span class="n">\u00b7</span>'
+         + '<span class="l">' + esc(p.title) + '<small>' + esc(p.by) + '</small></span></button></li>';
+  }).join('') + '</ul>';
   paint(h);
 }
 
@@ -335,6 +347,13 @@ function field(key, label, placeholder, hint){
        + 'spellcheck="false" oninput="setField(\'' + key + '\', this.value)">'
        + (hint ? '<div class="hint">' + esc(hint) + '</div>' : '') + '</div>';
 }
+function area(key, label, placeholder, hint){
+  var v = store.get(key, '');
+  return '<div class="field"><label for="f-' + key + '">' + esc(label) + '</label>'
+       + '<textarea id="f-' + key + '" rows="4" placeholder="' + esc(placeholder) + '" '
+       + 'oninput="setField(\'' + key + '\', this.value)">' + esc(v) + '</textarea>'
+       + (hint ? '<div class="hint">' + esc(hint) + '</div>' : '') + '</div>';
+}
 /* Store on input but never re-render — re-rendering would steal focus mid-word. */
 function setField(key, val){ store.set(key, val); }
 
@@ -353,16 +372,22 @@ function renderSettings(){
   h += '<div class="sectionhead">Your commemorations</div>';
   h += field('patron', 'Patron saint', 'Nicholas',
              'The saint whose name you bear. Entered here, the name appears in the morning prayers and in the prayers to your patron.');
+  h += field('priest', 'Spiritual father', 'Fr. John',
+             'Your parish priest or spiritual father.');
+  h += field('bishop', 'Bishop', 'His Eminence Metropolitan N.',
+             'The hierarch your parish commemorates. Left blank, the prayer reads simply "our bishop".');
   h += field('living', 'The living', 'Names, separated by commas',
              'Read in the prayer for the living.');
   h += field('departed', 'The departed', 'Names, separated by commas',
              'Read in the prayer for the departed. Memory eternal.');
+  h += area('intentions', 'What is on my heart', 'One to a line, or separated by commas',
+            'Kept as free text. There is no list to complete and nothing to tick off \u2014 add what you are carrying, and remove it when you no longer need to.');
   h += '<div class="hint" style="margin:-.6rem 0 0">These names are kept on this device only. Nothing is sent anywhere, and nothing leaves your phone.</div>';
 
   h += '<div class="sectionhead">About this book</div>';
   h += '<button class="setlink" onclick="go(\'about\')">The shape of the day<span class="rc-go">\u2192</span></button>';
   h += '<button class="setlink" onclick="go(\'patron\')">Prayers to your patron saint<span class="rc-go">\u2192</span></button>';
-  h += '<button class="setlink" onclick="go(\'commem\')">Those I remember<span class="rc-go">\u2192</span></button>';
+  h += '<button class="setlink" onclick="go(\'commem\')">The commemoration<span class="rc-go">\u2192</span></button>';
 
   h += '<div class="foot">Traditional English in the received order. Rubrics in red are instructions, not spoken.<br>'
      + 'The calendar computes Pascha offline, so the app works with no connection.</div>';
@@ -512,5 +537,6 @@ view = start;
 try { history.replaceState({v:view}, '', location.pathname); } catch(e){}
 makeToTop();
 render();
-CAL.ready(function(){ if(view.name === 'today') renderToday(); });
-setInterval(function(){ if(view.name === 'today') renderToday(); }, 60000);
+CAL.ready(function(){ if(view.name === 'today') renderToday(true); });
+/* Refresh the clock and the current office, without disturbing the reader. */
+setInterval(function(){ if(view.name === 'today') renderToday(true); }, 60000);
